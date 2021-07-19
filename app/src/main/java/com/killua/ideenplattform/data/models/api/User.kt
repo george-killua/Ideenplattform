@@ -9,8 +9,8 @@ data class User(
     //example: Max
     val lastname: String,
     //example: Mustermann
-    val profilePicture: String
+    val profilePicture: String,
     //example: https://ideenmanagement.tailored-apps.com/image/profile/some-url.png
-
+     val isManager: Boolean
 )
 
