@@ -7,4 +7,5 @@ class UserCreateReq(
     //example: Max
     val lastname: String,
     //example: Mustermann
+    val password:String
 )
