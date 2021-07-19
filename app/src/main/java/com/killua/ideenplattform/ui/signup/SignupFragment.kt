@@ -1,4 +1,4 @@
-package com.killua.ideenplattform.ui.notifications
+package com.killua.ideenplattform.ui.signup
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.killua.ideenplattform.R
-import com.killua.ideenplattform.databinding.FragmentNotificationsBinding
+import com.killua.ideenplattform.databinding.FragmentSignupBinding
 
-class NotificationsFragment : Fragment() {
+class SignupFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
-    private var _binding: FragmentNotificationsBinding? = null
+    private lateinit var signupViewModel: SignupViewModel
+    private var _binding: FragmentSignupBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +24,14 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        signupViewModel =
+            ViewModelProvider(this).get(SignupViewModel::class.java)
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentSignupBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        val textView: TextView = binding.textDashboard
+        signupViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
