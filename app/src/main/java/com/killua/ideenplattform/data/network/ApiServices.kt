@@ -6,6 +6,7 @@ import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.models.api.User
 import com.killua.ideenplattform.data.requests.*
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -99,3 +100,4 @@ interface ApiServices {
         @Part image: MultipartBody.Part
     ): Response<ResponseHandler>
 }
+data class HttpClient( val okHttpClient: OkHttpClient)
