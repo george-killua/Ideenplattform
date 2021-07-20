@@ -44,6 +44,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "com.github.pgreze:android-reactions:1.6"
+
 
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -86,6 +88,7 @@ dependencies {
     //image handler
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //preferences & encryption
     implementation("androidx.preference:preference-ktx:$preference_version")

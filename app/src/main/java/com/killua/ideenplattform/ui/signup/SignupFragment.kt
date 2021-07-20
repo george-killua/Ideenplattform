@@ -23,7 +23,7 @@ class SignupFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         signupViewModel =
             ViewModelProvider(this).get(SignupViewModel::class.java)
 
@@ -31,7 +31,7 @@ class SignupFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        signupViewModel.text.observe(viewLifecycleOwner, Observer {
+        signupViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root

@@ -13,7 +13,7 @@ data class Idea(
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
     val lastUpdated: String,
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
-    val comments: CommentList,
+    val comments: CommentList?=null,
     val imageUrl: String,
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
     val rating: IdeaRating

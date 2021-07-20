@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.killua.ideenplattform.R
-import com.killua.ideenplattform.data.models.api.User
+import com.killua.ideenplattform.data.models.local.UserCaching
 import java.lang.reflect.Type
 
 class SharedPreferencesHandler(val context: Context) {
@@ -24,18 +24,18 @@ class SharedPreferencesHandler(val context: Context) {
             )
         )
 
-    fun saveUserContent(user: User) = prefs.edit().putString(
+    fun saveUserContent(user: UserCaching) = prefs.edit().putString(
         context.getString(R.string.GJERPIGNJpsijpt34welkejngfsgfms), userToString(user)
     ).apply()
 
     companion object {
         private val gson = Gson()
-        private val type: Type = object : TypeToken<User?>() {}.type
-        fun stringToUser(json: String?): User? {
+        private val type: Type = object : TypeToken<UserCaching?>() {}.type
+        fun stringToUser(json: String?): UserCaching? {
             return gson.fromJson(json, type)
         }
 
-        fun userToString(user: User?): String {
+        fun userToString(user: UserCaching?): String {
             return gson.toJson(user, type)
         }
     }
