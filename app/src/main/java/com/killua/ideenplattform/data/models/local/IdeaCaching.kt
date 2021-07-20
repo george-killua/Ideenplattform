@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "idea_table")
 data class IdeaCaching(
  @PrimaryKey(autoGenerate = false)
-    val id: String,
+    val ideaCachingId: String="",
     //example: 76958aee-bd15-4308-b0eb-717fae97c136
    @Embedded
     val author: UserCaching,
