@@ -19,7 +19,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
-private val moduleBuilder = module {
+val moduleBuilder = module {
     fun dbProvider(context: Context): DbStructure {
         val factory =
             SupportFactory(SQLiteDatabase.getBytes("nfjsdnfsd@fsdk221,.".toCharArray()))
@@ -31,12 +31,10 @@ private val moduleBuilder = module {
             .allowMainThreadQueries().build()
     }
     single { dbProvider(androidContext()) }
-    //fun currentWeatherDaoProvider(dbStructure: DbStructure) = dbStructure.currentDao
-    // fun oneCallWeatherDaoProvider(dbStructure: DbStructure) = dbStructure.oneCallDao
-    // fun citiesDaoProvider(dbStructure: DbStructure) = dbStructure.citiesDao
-    // single { citiesDaoProvider(get()) }
-    //  single { currentWeatherDaoProvider(get()) }
-    //  single { oneCallWeatherDaoProvider(get()) }
+    fun ideaDaoProvider(dbStructure: DbStructure) = dbStructure.ideaDao
+    fun userDaoProvider(dbStructure: DbStructure) = dbStructure.userDao
+    single { ideaDaoProvider(get()) }
+      single { userDaoProvider(get()) }
 
 /*  fun providerWeatherRepository(
     api: ApiServices,
