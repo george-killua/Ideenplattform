@@ -1,19 +1,19 @@
 package com.killua.ideenplattform.data.repository
 
+import android.content.Context
 import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.IdeaDao
 import com.killua.ideenplattform.data.caching.UserDao
 import com.killua.ideenplattform.data.models.api.CommentList
 import com.killua.ideenplattform.data.models.local.CategoryCaching
+import com.killua.ideenplattform.data.models.local.SharedPrefsUser
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.network.ApiServices
 import com.killua.ideenplattform.data.repository.NetworkResult.ResponseHandler.safeApiCall
 import com.killua.ideenplattform.data.requests.*
+import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,9 +26,38 @@ class MainRepositoryImpl(
     val api: ApiServices,
     private val userDao: UserDao,
     private val ideaDao: IdeaDao,
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    context: Context
 ) :
     MainRepository {
+    val sharedPrefsHandler by lazy {
+        SharedPreferencesHandler(context)
+    }
+    var password: String = ""
+
+    override suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>> {
+        val oldUser = sharedPrefsHandler.userLoader
+        this.password = oldUser?.password ?: ""
+        val newUser = SharedPrefsUser(email, password, "")
+        if (oldUser == null) {
+            sharedPrefsHandler.saveUserContent(newUser)
+            this.password=password
+        }
+        else if (oldUser != newUser) sharedPrefsHandler.saveUserContent(newUser)
+        return flow {
+            getMe().collect {
+                emit(
+                    RepoResultResult(
+                        it.data != null,
+                        isNetworkingData = it.isNetworkingData,
+                        it.networkErrorMessage
+                    )
+                )
+            }
+        }
+    }
+
+
     override suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>> =
         flow {
             when (val res = safeApiCall(api.getAllUsers())) {
@@ -38,8 +67,8 @@ class MainRepositoryImpl(
                     emit(RepoResultResult(res.data, true))
                 }
                 is NetworkResult.Error -> {
-                    val localeData :ArrayList<UserCaching> = arrayListOf()
-                    userDao.getAllUsers()?.let {  localeData.addAll(userDao.getAllUsers()!!)}
+                    val localeData: ArrayList<UserCaching> = arrayListOf()
+                    userDao.getAllUsers()?.let { localeData.addAll(userDao.getAllUsers()!!) }
                     emit(RepoResultResult(localeData, false, res.message))
 
 
@@ -79,15 +108,21 @@ class MainRepositoryImpl(
             getAllUsers()
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun getMe(): Flow<RepoResultResult<Nothing>> =
+    override suspend fun getMe(): Flow<RepoResultResult<UserCaching?>> =
         flow {
             when (val res = safeApiCall(api.getMe())) {
 
                 is NetworkResult.Success -> {
-                    emit(RepoResultResult(null, true))
+                    emit(RepoResultResult(res.data, true))
+                    res.data?.let {
+                            sharedPrefsHandler.saveUserContent(SharedPrefsUser(it.userId,it.email,password))
+                        }
                 }
                 is NetworkResult.Error -> {
-                    emit(RepoResultResult(null, false, res.message))
+                    val oldUser = sharedPrefsHandler.userLoader
+                    var userCaching: UserCaching? = null
+                    if (oldUser != null) userCaching = userDao.getUserWithId(oldUser.id)
+                    emit(RepoResultResult(userCaching, false, res.message))
 
 
                 }
@@ -168,8 +203,9 @@ class MainRepositoryImpl(
                 }
                 is NetworkResult.Error -> {
 
-                    val localeData :ArrayList<CategoryCaching> = arrayListOf()
-                    categoryDao.getAllCategories()?.let {  localeData.addAll(categoryDao.getAllCategories()!!)}
+                    val localeData: ArrayList<CategoryCaching> = arrayListOf()
+                    categoryDao.getAllCategories()
+                        ?.let { localeData.addAll(categoryDao.getAllCategories()!!) }
                     emit(RepoResultResult(localeData, false, res.message))
 
 

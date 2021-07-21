@@ -7,10 +7,11 @@ import com.killua.ideenplattform.data.requests.*
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
+    suspend fun login(email:String,password:String):Flow<RepoResultResult<Boolean>>
     suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>>
     suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
     suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
-    suspend fun getMe(): Flow<RepoResultResult<Nothing>>
+    suspend fun getMe(): Flow<RepoResultResult<UserCaching?>>
     suspend fun getUserId(id: String): Flow<RepoResultResult<UserCaching>>
     suspend fun uploadUserImage(path: String): Flow<RepoResultResult<Nothing>>
     suspend fun deleteImageOfUser(): Flow<RepoResultResult<Nothing>>

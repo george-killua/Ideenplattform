@@ -48,16 +48,18 @@ val moduleBuilder = module {
         api: ApiServices,
         ideaDao: IdeaDao,
         userDao: UserDao,
-        categoryDao: CategoryDao
+        categoryDao: CategoryDao,
+        context:Context
     ): MainRepository {
         return MainRepositoryImpl(
             api,
             userDao,
             ideaDao,
-            categoryDao
+            categoryDao,
+            context
         )
     }
-        single { providerMainRepository(get(), get(), get(),get()) }
+        single { providerMainRepository(get(), get(), get(),get(),androidContext()) }
 
 
 // Specific viewModel pattern to tell Koin how to build CountriesViewModel
@@ -69,8 +71,11 @@ val moduleBuilder = module {
 
     fun provideHttpClient(sharedPreferencesHandler: SharedPreferencesHandler): OkHttpClient {
         val user = sharedPreferencesHandler.userLoader
-        assert(user == null)
-        val authToken: String = Credentials.basic(user?.email!!, user.password)
+
+        var authToken = ""
+        user?.let {
+            authToken=Credentials.basic(it.email, it.password)
+        }
         val client = OkHttpClient.Builder()
         client.addInterceptor(AuthenticationInterceptor(authToken))
         client.connectTimeout(10, TimeUnit.SECONDS)
