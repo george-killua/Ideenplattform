@@ -6,11 +6,12 @@ import com.killua.ideenplattform.data.models.local.IdeaCaching
 @Dao
 interface IdeaDao {
     @Query("select * from idea_table order by created desc")
-    fun getAllIdeas():List<IdeaCaching>?
+    fun getAllIdeas():ArrayList<IdeaCaching>?
 
     @Query("select * from idea_table where ideaCachingId =:id order by created desc")
-    fun getIdeaWithId(id: String):List<IdeaCaching>?
-
+    fun getIdeaWithId(id: String):IdeaCaching?
+    @Query("SELECT * FROM idea_table WHERE description Like '%' || :searchText || '%' OR title Like '%' || :searchText || '%' ORDER BY title DESC ")
+    fun getCityBySearchText(searchText:String):ArrayList<IdeaCaching>?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addIdeas(vararg ideaCaching: IdeaCaching)
 

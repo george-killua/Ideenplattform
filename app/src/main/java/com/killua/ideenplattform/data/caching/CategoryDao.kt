@@ -6,10 +6,10 @@ import com.killua.ideenplattform.data.models.local.CategoryCaching
 @Dao
 interface CategoryDao {
     @Query("select * from categorycaching order by id desc")
-    fun getAllCategories():Array<CategoryCaching>?
+    fun getAllCategories():ArrayList<CategoryCaching>?
 
     @Query("select * from categorycaching where id =:id order by id desc")
-    fun getCategoryWithId(id: String):Array<CategoryCaching>?
+    fun getCategoryWithId(id: String):CategoryCaching?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCategories(vararg categoryCaching: CategoryCaching)
