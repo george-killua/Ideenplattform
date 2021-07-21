@@ -40,18 +40,14 @@ class MainRepositoryImpl(
 
 
     @InternalCoroutinesApi
-    override suspend fun getAllIdeas() = flow {
+    override suspend fun getAllIdeas() = flow<Any> {
 
-runBlocking {
-    getAllCategories().collect {
 
-    }
-}
         getAllCategories().collect { categories ->
             when (categories) {
                 is RepoResultResult.Networking -> {
-                    val
-                    safeApiCall(api.getAllIdeas(categories.))
+             //       val
+                  //  safeApiCall(api.getAllIdeas(categories.))
                 }
                 is RepoResultResult.Caching -> {
 

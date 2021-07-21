@@ -51,7 +51,7 @@ class HomeViewModel(val context: Context) : BaseObservable(), KoinComponent {
     fun onAction(action: Action) {
         currentState = when (action) {
             is Action.LoadIdeas -> {
-                adapter.submitList(userRepository.getAllIdeas())
+                //adapter.submitList(userRepository.getAllIdeas())
                 currentState.copy(
                     toastMessage = null
                 )
@@ -89,7 +89,7 @@ class HomeViewModel(val context: Context) : BaseObservable(), KoinComponent {
                                             lastname = lastname
                                         )
                                     )*/
-                                adapter.submitList(userRepository.getAllIdeas())
+                             //   adapter.submitList(userRepository.getAllIdeas())
                                 this.copy(
                                     firstname = "",
                                     lastname = "",

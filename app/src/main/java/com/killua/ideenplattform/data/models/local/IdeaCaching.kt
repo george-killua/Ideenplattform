@@ -24,7 +24,6 @@ data class IdeaCaching(
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
     val imageUrl: String,
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
-    @Embedded
     val rating: Array<IdeaRatingCaching>
 ) {
     companion object {
@@ -36,7 +35,7 @@ data class IdeaCaching(
                         ideaCachingId = idea.id,
                         author = UserCaching.fromUser(idea.author)!!,
                         title = idea.title,
-                        category = CategoryCaching.fromCategory(idea.category)!!,
+                        category = idea.category,
                         description = idea.description,
                         created = idea.created,
                         lastUpdated = idea.lastUpdated,
@@ -52,7 +51,7 @@ data class IdeaCaching(
             ideaCachingId = idea.id,
             author = UserCaching.fromUser(idea.author)!!,
             title = idea.title,
-            category = CategoryCaching.fromCategory(idea.category)!!,
+            category = idea.category,
             description = idea.description,
             created = idea.created,
             lastUpdated = idea.lastUpdated,
