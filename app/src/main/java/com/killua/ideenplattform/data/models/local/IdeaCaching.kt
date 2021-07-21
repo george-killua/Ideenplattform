@@ -26,40 +26,6 @@ data class IdeaCaching(
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
     val rating: Array<IdeaRatingCaching>
 ) {
-    companion object {
-        fun arrayFromIdeas(list: List<Idea>): ArrayList<IdeaCaching> {
-            val cachesArray: ArrayList<IdeaCaching> = arrayListOf()
-            list.forEach { idea ->
-                cachesArray.add(
-                    IdeaCaching(
-                        ideaCachingId = idea.id,
-                        author = UserCaching.fromUser(idea.author)!!,
-                        title = idea.title,
-                        category = idea.category,
-                        description = idea.description,
-                        created = idea.created,
-                        lastUpdated = idea.lastUpdated,
-                        imageUrl = idea.imageUrl,
-                        rating = IdeaRatingCaching.arrayFromIdeaRatings(idea.rating)
-                    )
-                )
-            }
-            return cachesArray
-        }
-
-        fun fromIdea(idea: Idea) = IdeaCaching(
-            ideaCachingId = idea.id,
-            author = UserCaching.fromUser(idea.author)!!,
-            title = idea.title,
-            category = idea.category,
-            description = idea.description,
-            created = idea.created,
-            lastUpdated = idea.lastUpdated,
-            imageUrl = idea.imageUrl,
-            rating = IdeaRatingCaching.arrayFromIdeaRatings(idea.rating)
-        )
-
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -34,7 +34,7 @@ interface MainRepository {
     ): Flow<RepoResultResult<Nothing>>
 
     suspend fun deleteIdeaWithId(ideaId: String): Flow<RepoResultResult<Nothing>>
-    suspend fun searchIdeal(searchText: String): Flow<RepoResultResult<java.util.ArrayList<out Any>>>
+    suspend fun searchIdeal(searchText: String): Flow<RepoResultResult<List<Any>>>
     suspend fun releaseIdea(
         ideaId: String,
         releaseReq: IdeaReleaseReq

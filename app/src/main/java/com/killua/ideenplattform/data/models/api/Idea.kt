@@ -1,11 +1,12 @@
 package com.killua.ideenplattform.data.models.api
 
 import com.killua.ideenplattform.data.models.local.CategoryCaching
+import com.killua.ideenplattform.data.models.local.UserCaching
 
 data class Idea(
     val id: String,
     //example: 76958aee-bd15-4308-b0eb-717fae97c136
-    val author: User,
+    val author: UserCaching,
     val title: String,
     // example: Idea #1
     val category: CategoryCaching,

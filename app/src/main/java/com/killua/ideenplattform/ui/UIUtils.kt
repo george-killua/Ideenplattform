@@ -24,7 +24,7 @@ object PicassoFactory : KoinComponent {
 }
 
 object DataBindingAdapters {
-    @BindingAdapter("bind:imageUrl")
+    @BindingAdapter("imageUrl")
     fun setImageUri(view: ImageView, imageUri: String?) {
         if (imageUri == null) {
             view.setImageURI(null)

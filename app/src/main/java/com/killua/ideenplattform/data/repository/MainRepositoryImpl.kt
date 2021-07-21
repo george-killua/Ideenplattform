@@ -38,7 +38,8 @@ class MainRepositoryImpl(
                     emit(RepoResultResult(res.data, true))
                 }
                 is NetworkResult.Error -> {
-                    val localeData = userDao.getAllUsers()
+                    val localeData :ArrayList<UserCaching> = arrayListOf()
+                    userDao.getAllUsers()?.let {  localeData.addAll(userDao.getAllUsers()!!)}
                     emit(RepoResultResult(localeData, false, res.message))
 
 
@@ -166,7 +167,9 @@ class MainRepositoryImpl(
                     emit(RepoResultResult(res.data, true))
                 }
                 is NetworkResult.Error -> {
-                    val localeData = categoryDao.getAllCategories()
+
+                    val localeData :ArrayList<CategoryCaching> = arrayListOf()
+                    categoryDao.getAllCategories()?.let {  localeData.addAll(categoryDao.getAllCategories()!!)}
                     emit(RepoResultResult(localeData, false, res.message))
 
 
