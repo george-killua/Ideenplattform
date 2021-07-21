@@ -1,9 +1,9 @@
 package com.killua.ideenplattform.data.network
 
-import com.killua.ideenplattform.data.models.api.Category
 import com.killua.ideenplattform.data.models.api.CommentList
 import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.models.api.User
+import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.requests.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -12,7 +12,7 @@ import retrofit2.http.*
 
 interface ApiServices {
     @GET("user")
-    fun getAllUsers(): Response<List<User>>
+    fun getAllUsers(): Response<Array<User>>
 
     @POST("user")
     fun createUser(@Body userCreateReq: UserCreateReq): Response<ResponseHandler>
@@ -46,15 +46,15 @@ interface ApiServices {
 
     //category
     @GET("category")
-    fun getCategory(): Response<List<Category>>
+    fun getCategory(): Response<Array<CategoryCaching>>
 
     @GET("category/")
-    fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<Category>
+    fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<CategoryCaching>
 
 
     //ideas api req
     @GET("idea")
-    fun getAllIdeas(@QueryMap categoryId: String): Response<List<Idea>>
+    fun getAllIdeas(@QueryMap categoryId: String): Response<Array<Idea>>
 
     @Multipart
     @POST("idea")
@@ -73,7 +73,7 @@ interface ApiServices {
     fun deleteIdeaWithId(@Query("ideaId") ideaId: String): Response<ResponseHandler>
 
     @GET("idea/search")
-    fun searchIdeal(@Query("searchQuery") searchText: String): Response<List<Idea>>
+    fun searchIdeal(@Query("searchQuery") searchText: String): Response<Array<Idea>>
 
     @POST("idea/{ideaId}/released")
     fun releaseIdea(@Path("ideaId") ideaId: String, @Body releaseReq: IdeaReleaseReq): Response<ResponseHandler>

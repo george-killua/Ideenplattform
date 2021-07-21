@@ -11,119 +11,125 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/idea_item_constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/more"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_profile"
+
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:imageUrl="@{data.author.profilePicture}" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="15dp"
-            android:contentDescription="@string/options"
-            android:src="@drawable/ic_more"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="18dp"
+            android:text="@{data.title}"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/post_image"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_profile"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/image_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                bind:imageUrl="@{data.author.profilePicture}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:textColor="@color/black"
-                android:text="@{data.title}"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
         <ImageView
             android:id="@+id/post_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            bind:imageUrl="@{data.imageUrl}"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/idea_picture"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more" />
+            app:layout_constraintTop_toBottomOf="@+id/barrier3"
+            bind:imageUrl="@{data.imageUrl}" />
 
         <TextView
             android:id="@+id/tv_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginVertical="5dp"
+            android:text="@{data.description}"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@{data.description}"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/post_image" />
 
-        <ImageView
-            android:id="@+id/comment"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:contentDescription="@string/comment"
-            android:src="@drawable/ic_comment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
-
-        <ImageView
+        <com.github.pgreze.reactions.ReactionView
             android:id="@+id/like"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/rate"
+            android:layout_marginTop="6dp"
+            android:contentDescription="@string/comment"
             android:src="@drawable/ic_like"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+            app:layout_constraintTop_toBottomOf="@id/barrier2">
+
+            <ImageView
+                android:id="@+id/comment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="@string/rate"
+                android:src="@drawable/ic_comment"
+                android:textAlignment="textEnd" />
+
+            <TextView
+                android:id="@+id/en1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:text="@string/comments" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_rate_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
+            android:layout_marginEnd="5dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/like"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+            app:layout_constraintBottom_toBottomOf="@+id/like"
+            app:layout_constraintEnd_toStartOf="@id/like"
+            app:layout_constraintTop_toTopOf="@+id/like" />
 
-        <TextView
-            android:id="@+id/textView"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.author.getFullName}"
-            app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toBottomOf="@+id/tv_rate_description" />
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tv_description" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/comment"
-            app:layout_constraintTop_toBottomOf="@+id/comment" />
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="image_profile" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

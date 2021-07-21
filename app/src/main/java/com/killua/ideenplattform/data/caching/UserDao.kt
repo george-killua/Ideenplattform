@@ -10,7 +10,7 @@ import com.killua.ideenplattform.data.models.local.UserCaching
 @Dao
 interface UserDao {
     @Query("select * from user_table where userId =:id ")
-    fun getUserWithId(id: String):List<UserCaching>
+    fun getUserWithId(id: String):List<UserCaching>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUser(vararg userCaching: UserCaching)

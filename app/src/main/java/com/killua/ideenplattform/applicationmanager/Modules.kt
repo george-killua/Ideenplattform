@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.killua.ideenplattform.R
+import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.DbStructure
-import com.killua.ideenplattform.data.caching.IdeasDao
+import com.killua.ideenplattform.data.caching.IdeaDao
 import com.killua.ideenplattform.data.caching.UserDao
 import com.killua.ideenplattform.data.network.ApiServices
 import com.killua.ideenplattform.data.network.HttpClient
@@ -38,21 +39,25 @@ val moduleBuilder = module {
     single { dbProvider(androidContext()) }
     fun ideaDaoProvider(dbStructure: DbStructure) = dbStructure.ideaDao
     fun userDaoProvider(dbStructure: DbStructure) = dbStructure.userDao
+    fun categoryDaoProvider(dbStructure: DbStructure) = dbStructure.categoryDao
+    single { categoryDaoProvider(get()) }
     single { ideaDaoProvider(get()) }
     single { userDaoProvider(get()) }
 
     fun providerMainRepository(
         api: ApiServices,
-        ideasDao: IdeasDao,
-        userDao: UserDao
+        ideaDao: IdeaDao,
+        userDao: UserDao,
+        categoryDao: CategoryDao
     ): MainRepository {
         return MainRepositoryImpl(
             api,
             userDao,
-            ideasDao
+            ideaDao,
+            categoryDao
         )
     }
-        single { providerMainRepository(get(), get(), get()) }
+        single { providerMainRepository(get(), get(), get(),get()) }
 
 
 // Specific viewModel pattern to tell Koin how to build CountriesViewModel

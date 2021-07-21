@@ -4,6 +4,6 @@ package com.killua.ideenplattform.data.models.api
 data class IdeaRating(
     val user: User,
 //    example: 4.25
-    val count: Double
+    val rating: Int
 //    example: 4
 )
