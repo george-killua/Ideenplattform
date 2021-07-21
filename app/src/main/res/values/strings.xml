@@ -3,10 +3,4 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="options">option</string>
-    <string name="idea_picture">Idea picture</string>
-    <string name="comment">comment</string>
-    <string name="rate">Rate</string>
-    <string name="add_idea">Add Idea</string>
-    <string name="comments">Comments</string>
 </resources>
