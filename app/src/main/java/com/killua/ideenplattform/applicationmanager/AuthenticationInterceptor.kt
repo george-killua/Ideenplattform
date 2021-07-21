@@ -5,6 +5,7 @@ import okhttp3.Response
 
 
 class AuthenticationInterceptor(private val token: String) : Interceptor {
+    //ist kein Token, base64 encode
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val builder = original.newBuilder()
