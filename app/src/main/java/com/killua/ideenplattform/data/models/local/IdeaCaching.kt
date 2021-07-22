@@ -3,13 +3,14 @@ package com.killua.ideenplattform.data.models.local
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.killua.ideenplattform.data.models.api.Idea
 
 @Entity(tableName = "idea_table")
 data class IdeaCaching(
- @PrimaryKey(autoGenerate = false)
-    val ideaCachingId: String="",
+    @PrimaryKey(autoGenerate = false)
+    val ideaCachingId: String = "",
     //example: 76958aee-bd15-4308-b0eb-717fae97c136
-   @Embedded
+    @Embedded
     val author: UserCaching,
     val title: String,
     // example: Idea #1
@@ -23,6 +24,38 @@ data class IdeaCaching(
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
     val imageUrl: String,
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
-    @Embedded
-    val rating: IdeaRatingCaching
-)
+    val rating: Array<IdeaRatingCaching>
+) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as IdeaCaching
+
+        if (ideaCachingId != other.ideaCachingId) return false
+        if (author != other.author) return false
+        if (title != other.title) return false
+        if (category != other.category) return false
+        if (description != other.description) return false
+        if (created != other.created) return false
+        if (lastUpdated != other.lastUpdated) return false
+        if (imageUrl != other.imageUrl) return false
+        if (!rating.contentEquals(other.rating)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = ideaCachingId.hashCode()
+        result = 31 * result + author.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + category.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + created.hashCode()
+        result = 31 * result + lastUpdated.hashCode()
+        result = 31 * result + imageUrl.hashCode()
+        result = 31 * result + rating.contentHashCode()
+        return result
+    }
+}

@@ -4,18 +4,24 @@ import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.killua.ideenplattform.R
+import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.DbStructure
+import com.killua.ideenplattform.data.caching.IdeaDao
+import com.killua.ideenplattform.data.caching.UserDao
 import com.killua.ideenplattform.data.network.ApiServices
 import com.killua.ideenplattform.data.network.HttpClient
+import com.killua.ideenplattform.data.repository.MainRepository
+import com.killua.ideenplattform.data.repository.MainRepositoryImpl
 import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
+import com.killua.ideenplattform.ui.home.HomeViewModel
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
-import okhttp3.*
+import okhttp3.Credentials
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -33,34 +39,43 @@ val moduleBuilder = module {
     single { dbProvider(androidContext()) }
     fun ideaDaoProvider(dbStructure: DbStructure) = dbStructure.ideaDao
     fun userDaoProvider(dbStructure: DbStructure) = dbStructure.userDao
+    fun categoryDaoProvider(dbStructure: DbStructure) = dbStructure.categoryDao
+    single { categoryDaoProvider(get()) }
     single { ideaDaoProvider(get()) }
-      single { userDaoProvider(get()) }
+    single { userDaoProvider(get()) }
 
-/*  fun providerWeatherRepository(
-    api: ApiServices,
-//    currentDao: CurrentDao,
-//      oneCallDao: OneCallDao
-):
-       WeatherRepory {
-    return WeatherRepositoryImpl(
-        api,
-        currentDao,
-        oneCallDao
-    )
-single { providerWeatherRepository(get(), get(), get()) }
+    fun providerMainRepository(
+        api: ApiServices,
+        ideaDao: IdeaDao,
+        userDao: UserDao,
+        categoryDao: CategoryDao,
+        context:Context
+    ): MainRepository {
+        return MainRepositoryImpl(
+            api,
+            userDao,
+            ideaDao,
+            categoryDao,
+            context
+        )
+    }
+        single { providerMainRepository(get(), get(), get(),get(),androidContext()) }
 
 
 // Specific viewModel pattern to tell Koin how to build CountriesViewModel
-single { prams ->
-    ForYouViewModel(repository = get(), prefs = get(), modelStatus = prams.get())
-}
-}*/
+        single {
+            HomeViewModel(androidContext())
+        }
+
 
 
     fun provideHttpClient(sharedPreferencesHandler: SharedPreferencesHandler): OkHttpClient {
-        val user =sharedPreferencesHandler.userLoader
-        assert(user==null)
-        val authToken: String = Credentials.basic(user?.email!!, user.password)
+        val user = sharedPreferencesHandler.userLoader
+
+        var authToken = ""
+        user?.let {
+            authToken=Credentials.basic(it.email, it.password)
+        }
         val client = OkHttpClient.Builder()
         client.addInterceptor(AuthenticationInterceptor(authToken))
         client.connectTimeout(10, TimeUnit.SECONDS)
@@ -69,7 +84,6 @@ single { prams ->
 
         return client.build()
     }
-    single {  }
 
     fun provideRetrofit(client: OkHttpClient, baseUrl: String): Retrofit {
         return Retrofit.Builder()

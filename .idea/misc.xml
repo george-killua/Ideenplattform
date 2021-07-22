@@ -3,15 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/button_login_border.xml" value="0.15104166666666666" />
+        <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/drawable/ic_like.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/drawable/placeholder.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/ditails_fragment.xml" value="0.14447463768115942" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13728470111448834" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.17137096774193547" />
         <entry key="app/src/main/res/layout/fragment_new_idee.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.13728470111448834" />
-        <entry key="app/src/main/res/layout/rv_idee_item.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/rv_idee_item.xml" value="0.3447387362312739" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.27794871794871795" />
       </map>
     </option>

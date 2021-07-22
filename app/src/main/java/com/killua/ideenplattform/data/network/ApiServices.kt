@@ -1,37 +1,34 @@
 package com.killua.ideenplattform.data.network
 
-import com.killua.ideenplattform.data.models.api.Category
-import com.killua.ideenplattform.data.models.api.CommentList
-import com.killua.ideenplattform.data.models.api.Idea
-import com.killua.ideenplattform.data.models.api.User
+import com.killua.ideenplattform.data.models.api.*
+import com.killua.ideenplattform.data.models.local.*
 import com.killua.ideenplattform.data.requests.*
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
+import okhttp3.*
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiServices {
     @GET("user")
-    fun getAllUsers(): Response<List<User>>
+    fun getAllUsers(): Response<ArrayList<UserCaching>>
 
     @POST("user")
     fun createUser(@Body userCreateReq: UserCreateReq): Response<ResponseHandler>
 
     @PUT("user")
-    fun updateUser(@Body updateUser: UserCreateReq): Response<User>
+    fun updateUser(@Body updateUser: UserCreateReq): Response<UserCaching>
 
     @GET("user/me")
-    fun getMe(): Response<User>
+    fun getMe(): Response<UserCaching>
 
     @GET("user/")
-    fun getUserId(@Query("userId") id: String): Response<User>
+    fun getUserId(@Query("userId") id: String): Response<UserCaching>
 
     //get photo od user and save it
 
     @Multipart
     @POST("user/image")
     fun uploadUserImage(
-        @Part image: MultipartBody.Part
+        @Part("file\"; filename=\"pp.png\" ")image: MultipartBody.Part
     ):Response<ResponseHandler>
 
     @DELETE("user/image")
@@ -46,15 +43,15 @@ interface ApiServices {
 
     //category
     @GET("category")
-    fun getCategory(): Response<List<Category>>
+    fun getCategory(): Response<ArrayList<CategoryCaching>>
 
     @GET("category/")
-    fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<Category>
+    fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<CategoryCaching>
 
 
     //ideas api req
     @GET("idea")
-    fun getAllIdeas(@QueryMap categoryId: String): Response<List<Idea>>
+    fun getAllIdeas(@QueryMap categoryId: String): Response<ArrayList<Idea>>
 
     @Multipart
     @POST("idea")
@@ -67,13 +64,13 @@ interface ApiServices {
     fun getIdeaWithId(@Query("ideaId") ideaId: String): Response<Idea>
 
     @PUT("idea/")
-    fun updateIdeaWithId(@Query("ideaId") ideaId: String): Response<ResponseHandler>
+    fun updateIdeaWithId(@Query("ideaId") ideaId: String,@Body createIdeeReq: CreateIdeeReq): Response<ResponseHandler>
 
     @DELETE("idea/")
     fun deleteIdeaWithId(@Query("ideaId") ideaId: String): Response<ResponseHandler>
 
     @GET("idea/search")
-    fun searchIdeal(@Query("searchQuery") searchText: String): Response<List<Idea>>
+    fun searchIdeal(@Query("searchQuery") searchText: String): Response<ArrayList<Idea>>
 
     @POST("idea/{ideaId}/released")
     fun releaseIdea(@Path("ideaId") ideaId: String, @Body releaseReq: IdeaReleaseReq): Response<ResponseHandler>
@@ -88,7 +85,7 @@ interface ApiServices {
     fun deleteComments(@Path("ideaId") ideaId: String, @Path("commentId") commentId: String): Response<ResponseHandler>
 
     @POST("idea/{ideaId}/rating")
-    fun postRating(@Path("ideaId") ideaId: String): Response<ResponseHandler>
+    fun postRating(@Path("ideaId") ideaId: String,@Body postRating: PostRating): Response<ResponseHandler>
 
     @DELETE("idea/{ideaId}/rating")
     fun deleteRating(@Path("ideaId") ideaId: String): Response<ResponseHandler>

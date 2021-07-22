@@ -2,8 +2,8 @@ package com.killua.ideenplattform.data.models.local
 
 //    The rating information of the idea.
 data class IdeaRatingCaching(
-    val average: Double,
+    val user: UserCaching,
 //    example: 4.25
-    val count: Double
+    val rating: Int
 //    example: 4
 )

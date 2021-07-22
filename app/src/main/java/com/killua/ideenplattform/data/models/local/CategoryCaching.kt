@@ -1,7 +1,12 @@
 package com.killua.ideenplattform.data.models.local
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class CategoryCaching(
-    val id: String,
+    @PrimaryKey(autoGenerate = false)
+    val id: String = "",
     //example: sport-and-fun
     val name_en: String,
     //  example: Sport & Fun
