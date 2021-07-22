@@ -1,89 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context=".ui.login.LoginFragment">
 
-        <ImageView
-            android:id="@+id/rb_Logo"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/RB_Logo"
             android:layout_width="wrap_content"
-            android:padding="@dimen/_30sdp"
+            android:layout_height="200dp"
+            android:padding="30dp"
             android:src="@drawable/rb_logo"
             app:layout_constraintBottom_toTopOf="@+id/etUserName"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:background="@color/grey"
-            android:hint="@string/benutzername"
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUserName"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/reg_login_20dp"
             android:layout_width="match_parent"
-            android:padding="@dimen/reg_login_20dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen20dp"
+            android:background="@color/grey"
+            android:hint="@string/Benutzername"
+            android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
-
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rb_Logo" />
+            app:layout_constraintTop_toBottomOf="@+id/RB_Logo" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen20dp"
             android:background="@color/grey"
             android:hint="@string/password"
-            android:id="@+id/et_Password"
             android:inputType="textPassword"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20sdp"
-            android:layout_width="match_parent"
-            android:padding="@dimen/_20sdp"
+            android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etUserName" />
 
-        <Button
-
-            android:id="@+id/btn_login"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20sdp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:padding="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen20dp"
+            android:padding="@dimen/dimen15dp"
             android:text="@string/login"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_register"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnRegister"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_Password" />
+            app:layout_constraintTop_toBottomOf="@+id/etPassword"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:backgroundTint="@color/white"
-            android:id="@+id/btn_register"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20sdp"
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
-            android:padding="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen20dp"
+            android:background="@drawable/button_login_border"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/dimen15dp"
             android:text="@string/register"
             android:textColor="@color/grey_2"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login"
-            app:strokeColor="@color/black"
-            app:strokeWidth="@dimen/_2sdp" />
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.killua.ideenplattform.MainActivity
 import com.killua.ideenplattform.R
 
@@ -26,8 +27,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).supportActionBar?.let{
-            it.hide()
-        }
+
+        (requireActivity() as MainActivity).supportActionBar?.hide()
     }
+
 }
