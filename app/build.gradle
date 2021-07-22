@@ -34,7 +34,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-       dataBinding true
+        dataBinding true
     }
 }
 
@@ -47,6 +47,7 @@ dependencies {
     implementation "com.github.pgreze:android-reactions:1.6"
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
+    //camera gallery , activity result
 
 
     //lifecycle
@@ -69,7 +70,7 @@ dependencies {
     //retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit"
 
     //local caching @room
     implementation("androidx.room:room-runtime:$room_version")

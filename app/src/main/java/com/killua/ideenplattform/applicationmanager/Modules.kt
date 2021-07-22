@@ -2,7 +2,6 @@ package com.killua.ideenplattform.applicationmanager
 
 import android.content.Context
 import androidx.room.Room
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.DbStructure
@@ -21,6 +20,7 @@ import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -88,8 +88,8 @@ val moduleBuilder = module {
     fun provideRetrofit(client: OkHttpClient, baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(client)
             .build()
     }

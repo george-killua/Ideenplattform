@@ -1,100 +1,119 @@
 package com.killua.ideenplattform.data.network
 
-import com.killua.ideenplattform.data.models.api.*
-import com.killua.ideenplattform.data.models.local.*
+import com.killua.ideenplattform.data.models.api.CommentList
+import com.killua.ideenplattform.data.models.api.Idea
+import com.killua.ideenplattform.data.models.local.CategoryCaching
+import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
-import okhttp3.*
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiServices {
     @GET("user")
-    fun getAllUsers(): Response<ArrayList<UserCaching>>
+    suspend fun getAllUsers(): Response<ArrayList<UserCaching>>
 
     @POST("user")
-    fun createUser(@Body userCreateReq: UserCreateReq): Response<ResponseHandler>
+    suspend fun createUser(@Body userCreateReq: UserCreateReq): Response<ResponseHandler>
 
     @PUT("user")
-    fun updateUser(@Body updateUser: UserCreateReq): Response<UserCaching>
+    suspend fun updateUser(@Body updateUser: UserCreateReq): Response<UserCaching>
 
     @GET("user/me")
-    fun getMe(): Response<UserCaching>
+    suspend fun getMe(): Response<UserCaching>
 
-    @GET("user/")
-    fun getUserId(@Query("userId") id: String): Response<UserCaching>
+    @GET("user")
+    suspend fun getUserId(@Query("userId") id: String): Response<UserCaching>
 
     //get photo od user and save it
 
     @Multipart
     @POST("user/image")
-    fun uploadUserImage(
-        @Part("file\"; filename=\"pp.png\" ")image: MultipartBody.Part
-    ):Response<ResponseHandler>
+    suspend fun uploadUserImage(
+        @Part() image: MultipartBody.Part
+    ): Response<ResponseHandler>
 
     @DELETE("user/image")
-    fun deleteImageOfUser():Response<ResponseHandler>
+    suspend fun deleteImageOfUser(): Response<ResponseHandler>
 
     @GET("user/{userId}/manager")
-    fun updateMangerStatus(
+    suspend fun updateMangerStatus(
         @Path("userId") userId: String,
         @Body updateManagerStatus: UpdateManagerStatus
-    ):Response<ResponseHandler>
+    ): Response<ResponseHandler>
 
 
     //category
     @GET("category")
-    fun getCategory(): Response<ArrayList<CategoryCaching>>
+    suspend fun getCategory(): Response<ArrayList<CategoryCaching>>
 
     @GET("category/")
-    fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<CategoryCaching>
+    suspend fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<CategoryCaching>
 
 
     //ideas api req
-    @GET("idea")
-    fun getAllIdeas(@QueryMap categoryId: String): Response<ArrayList<Idea>>
+    @GET("idea/")
+    suspend fun getAllIdeas(@QueryMap categoryId: String): Response<ArrayList<Idea>>
 
     @Multipart
-    @POST("idea")
-    fun createNewIdea(
+    @POST("idea/")
+    suspend fun createNewIdea(
         @Body createIdeeReq: CreateIdeeReq,
         @Part image: MultipartBody.Part
     ): Response<ResponseHandler>
 
     @GET("idea/")
-    fun getIdeaWithId(@Query("ideaId") ideaId: String): Response<Idea>
+    suspend fun getIdeaWithId(@Query("ideaId") ideaId: String): Response<Idea>
 
     @PUT("idea/")
-    fun updateIdeaWithId(@Query("ideaId") ideaId: String,@Body createIdeeReq: CreateIdeeReq): Response<ResponseHandler>
+    suspend fun updateIdeaWithId(
+        @Query("ideaId") ideaId: String,
+        @Body createIdeeReq: CreateIdeeReq
+    ): Response<ResponseHandler>
 
     @DELETE("idea/")
-    fun deleteIdeaWithId(@Query("ideaId") ideaId: String): Response<ResponseHandler>
+    suspend fun deleteIdeaWithId(@Query("ideaId") ideaId: String): Response<ResponseHandler>
 
     @GET("idea/search")
-    fun searchIdeal(@Query("searchQuery") searchText: String): Response<ArrayList<Idea>>
+    suspend fun searchIdeal(@Query("searchQuery") searchText: String): Response<ArrayList<Idea>>
 
     @POST("idea/{ideaId}/released")
-    fun releaseIdea(@Path("ideaId") ideaId: String, @Body releaseReq: IdeaReleaseReq): Response<ResponseHandler>
+    suspend fun releaseIdea(
+        @Path("ideaId") ideaId: String,
+        @Body releaseReq: IdeaReleaseReq
+    ): Response<ResponseHandler>
 
     @POST("idea/{ideaId}/comment")
-    fun createComment(@Path("ideaId") ideaId: String, @Body createCommentReq: CreateCommentReq): Response<ResponseHandler>
+    suspend fun createComment(
+        @Path("ideaId") ideaId: String,
+        @Body createCommentReq: CreateCommentReq
+    ): Response<ResponseHandler>
 
     @GET("idea/{ideaId}/comment")
-    fun getComments(@Path("ideaId") ideaId: String): Response<CommentList>
+    suspend fun getComments(@Path("ideaId") ideaId: String): Response<CommentList>
 
     @DELETE("idea/{ideaId}/comment/{commentId}")
-    fun deleteComments(@Path("ideaId") ideaId: String, @Path("commentId") commentId: String): Response<ResponseHandler>
+    suspend fun deleteComments(
+        @Path("ideaId") ideaId: String,
+        @Path("commentId") commentId: String
+    ): Response<ResponseHandler>
 
     @POST("idea/{ideaId}/rating")
-    fun postRating(@Path("ideaId") ideaId: String,@Body postRating: PostRating): Response<ResponseHandler>
+    suspend fun postRating(
+        @Path("ideaId") ideaId: String,
+        @Body postRating: PostRating
+    ): Response<ResponseHandler>
 
     @DELETE("idea/{ideaId}/rating")
-    fun deleteRating(@Path("ideaId") ideaId: String): Response<ResponseHandler>
+    suspend fun deleteRating(@Path("ideaId") ideaId: String): Response<ResponseHandler>
 
     @Multipart
     @POST("idea/{ideaId}/image")
-    fun uploadImageIdea(
+    suspend fun uploadImageIdea(
         @Path("ideaId") ideaId: String,
         @Part image: MultipartBody.Part
     ): Response<ResponseHandler>
 }
-data class HttpClient( val okHttpClient: OkHttpClient)
+
+data class HttpClient(val okHttpClient: OkHttpClient)

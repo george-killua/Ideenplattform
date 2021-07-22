@@ -1,32 +1,35 @@
 package com.killua.ideenplattform.ui.newidee
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.killua.ideenplattform.R
+import androidx.fragment.app.Fragment
+import com.killua.ideenplattform.MainActivity
+import com.killua.ideenplattform.databinding.FragmentNewIdeeBinding
+import org.koin.android.ext.android.inject
 
 class NewIdeeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = NewIdeeFragment()
+    private val viewModel: NewIdeeViewModel by inject()
+    private val binding by lazy {
+        FragmentNewIdeeBinding.inflate(layoutInflater)
     }
-
-    private lateinit var viewModel: NewIdeeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_new_idee, container, false)
+    ): View {
+        binding.vm = viewModel
+        binding.executePendingBindings()
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(NewIdeeViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
+
 
 }

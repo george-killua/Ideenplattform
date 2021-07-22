@@ -38,7 +38,7 @@ class MainRepositoryImpl(
     override suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>> {
         val oldUser = sharedPrefsHandler.userLoader
         this.password = oldUser?.password ?: ""
-        val newUser = SharedPrefsUser(email, password, "")
+        val newUser = SharedPrefsUser("",email, password)
         if (oldUser == null) {
             sharedPrefsHandler.saveUserContent(newUser)
             this.password=password
@@ -54,7 +54,7 @@ class MainRepositoryImpl(
                     )
                 )
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
 
