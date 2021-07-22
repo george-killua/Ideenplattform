@@ -16,7 +16,7 @@ import org.koin.core.component.inject
 object PicassoFactory : KoinComponent {
     fun build(): Picasso {
         val client: OkHttpClient by inject()
-        val picasso=Picasso.Builder(MyApplication.instance).downloader(OkHttp3Downloader(client))
+        val picasso = Picasso.Builder(MyApplication.instance).downloader(OkHttp3Downloader(client))
         picasso.indicatorsEnabled(true)
         Picasso.setSingletonInstance(picasso.build())
         return picasso.build()
@@ -41,4 +41,5 @@ object DataBindingAdapters {
                 })
         }
     }
+
 }

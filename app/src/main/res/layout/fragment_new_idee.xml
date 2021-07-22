@@ -47,11 +47,16 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="@dimen/_3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:hint="@string/name"
+                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
+                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+
                 app:helperText="@string/name"
                 app:layout_constraintBottom_toTopOf="@+id/et_description"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +65,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+
+                    android:text="@={vm.title}"
+                   app:textChangedListener="@{vm.passwordTextWatcher}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
