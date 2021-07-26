@@ -1,7 +1,7 @@
 package com.killua.ideenplattform.data.network
 
-import com.killua.ideenplattform.data.models.api.CommentList
 import com.killua.ideenplattform.data.models.api.Idea
+import com.killua.ideenplattform.data.models.api.IdeaComment
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
@@ -92,7 +92,7 @@ interface ApiServices {
     ): Response<ResponseHandler>
 
     @GET("idea/{ideaId}/tv_comment")
-    suspend fun getComments(@Path("ideaId") ideaId: String): Response<CommentList>
+    suspend fun getComments(@Path("ideaId") ideaId: String): Response<List<IdeaComment>>
 
     @DELETE("idea/{ideaId}/tv_comment/{commentId}")
     suspend fun deleteComments(

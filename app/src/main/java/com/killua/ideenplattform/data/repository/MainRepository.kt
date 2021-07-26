@@ -1,7 +1,7 @@
 package com.killua.ideenplattform.data.repository
 
-import com.killua.ideenplattform.data.models.api.CommentList
 import com.killua.ideenplattform.data.models.api.Idea
+import com.killua.ideenplattform.data.models.api.IdeaComment
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
@@ -48,7 +48,7 @@ interface MainRepository {
         createCommentReq: CreateCommentReq
     ): Flow<RepoResultResult<Nothing>>
 
-    suspend fun getComments(ideaId: String): Flow<RepoResultResult<CommentList>>
+    suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>>
     suspend fun deleteComments(ideaId: String, commentId: String): Flow<RepoResultResult<Nothing>>
     suspend fun postRating(ideaId: String, postRating: PostRating): Flow<RepoResultResult<Nothing>>
     suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Nothing>>

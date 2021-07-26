@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import com.github.drjacky.imagepicker.ImagePicker
 import com.killua.ideenplattform.databinding.FragmentNewIdeeBinding
 import com.killua.ideenplattform.ui.details.DetailFragmentDirections
@@ -21,7 +20,7 @@ import org.koin.android.ext.android.inject
 
 
 class ManagementIdeaFragment : Fragment() {
-  //  private val args: ManagementIdeaFragmentArgs by navArgs()
+    //  private val args: ManagementIdeaFragmentArgs by navArgs()
     private val viewModel: ManagementIdeeViewModel by inject()
 
     private lateinit var binding: FragmentNewIdeeBinding
@@ -57,7 +56,7 @@ class ManagementIdeaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // val id = args.idOfIdea
+        // val id = args.idOfIdea
 
         if (id != null) {
 
@@ -65,17 +64,21 @@ class ManagementIdeaFragment : Fragment() {
         binding.vm = viewModel
         //binding.spCategory.adapter=
         binding.executePendingBindings()
-        viewModel.subscribeToStateChanges {
-            if (it.toastMessage != null) showToast(it.toastMessage)
-            if(it.categoryNotSelected) showToast(it.toastMessage)
-            if (it.descriptionIsEmpty) binding.etDescription.error = it.toastMessage
-            if (it.titleISEmpty) binding.etName.error = it.toastMessage
+        viewModel.stateLiveData.observe(viewLifecycleOwner,
+            {
+                if (it.toastMessage != null) showToast(it.toastMessage)
+                if (it.categoryNotSelected) showToast(it.toastMessage)
+                if (it.descriptionIsEmpty) binding.etDescription.error = it.toastMessage
+                if (it.titleISEmpty) binding.etName.error = it.toastMessage
 
-            if(it.navigateToOtherScreen){
-                val action =DetailFragmentDirections.actionDetailFragmentToManagementIdeaFragment(it.idOfIdea)
-                view.findNavController().navigate(action)
-            }
-        }
+                if (it.navigateToOtherScreen) {
+                    val action =
+                        DetailFragmentDirections.actionDetailFragmentToManagementIdeaFragment(it.idOfIdea)
+                    view.findNavController().navigate(action)
+                }
+
+            })
+
         binding.spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -103,6 +106,6 @@ class ManagementIdeaFragment : Fragment() {
 
 
     private fun showToast(message: String?) {
-        if (message!=null)  Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        if (message != null) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

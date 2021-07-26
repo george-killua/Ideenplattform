@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken
 import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.IdeaDao
 import com.killua.ideenplattform.data.caching.UserDao
-import com.killua.ideenplattform.data.models.api.CommentList
 import com.killua.ideenplattform.data.models.api.Idea
+import com.killua.ideenplattform.data.models.api.IdeaComment
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.IdeaCaching
 import com.killua.ideenplattform.data.models.local.SharedPrefsUser
@@ -295,9 +295,9 @@ class MainRepositoryImpl(
                             ideas.take(10).map { idea ->
                                 IdeaCaching(
                                     ideaCachingId = idea.id,
-                                    authorId = idea.author!!.userId,
+                                    authorId = idea.author.userId,
                                     title = idea.title,
-                                    categoryId = idea.category!!.id,
+                                    categoryId = idea.category.id,
                                     description = idea.description,
                                     created = idea.created,
                                     lastUpdated = idea.lastUpdated,
@@ -417,7 +417,7 @@ class MainRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getComments(ideaId: String): Flow<RepoResultResult<CommentList>> = flow {
+    override suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>> = flow {
         when (val res = safeApiCall(api.getComments(ideaId))) {
 
             is NetworkResult.Success -> {

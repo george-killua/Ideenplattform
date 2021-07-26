@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import com.killua.ideenplattform.data.models.api.CommentList
+import com.killua.ideenplattform.data.models.api.IdeaComment
 import com.killua.ideenplattform.data.repository.MainRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -16,7 +16,7 @@ class HomeViewModel(val context: Context) : BaseObservable(), KoinComponent {
     @Bindable
     val adapter: IdeasAdapter = IdeasAdapter()
 
-    fun showComments(ideaCommentList: CommentList) {
+    fun showComments(ideaCommentList: List<IdeaComment>) {
 
     }
 
