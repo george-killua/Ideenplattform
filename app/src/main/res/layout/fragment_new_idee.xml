@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.killua.ideenplattform.ui.newidee.NewIdeeViewModel" />
+            type="com.killua.ideenplattform.ui.newidee.ManagementIdeeViewModel" />
     </data>
 
     <ScrollView
@@ -18,22 +18,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.newidee.NewIdeeFragment">
+            tools:context=".ui.newidee.ManagementIdeaFragment">
 
 
             <ImageView
                 android:id="@+id/imageView"
+                imageUrl="@{vm.imagePathUri}"
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_90sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@+id/materialButton"
+                app:layout_constraintEnd_toStartOf="@+id/btn_upload_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/placeholder" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/materialButton"
+                android:id="@+id/btn_upload_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="hochladen"
@@ -47,15 +48,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="@dimen/_3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:hint="@string/name"
-                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
-                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="@dimen/_3sdp"
 
                 app:helperText="@string/name"
                 app:layout_constraintBottom_toTopOf="@+id/et_description"
@@ -66,10 +66,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:text="@={vm.title}"
-                   app:textChangedListener="@{vm.passwordTextWatcher}"/>
-
+                    android:text="@={vm.titleQuality}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -88,41 +85,40 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/_75sdp"
+                    android:gravity="top"
+                    android:maxHeight="@dimen/_75sdp"
+                    android:scrollbars="none"
+                    android:scrollHorizontally="true"
+                    android:text="@={vm.description}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
+            <Spinner
+                android:overlapAnchor="false"
+                android:spinnerMode="dropdown"
                 android:id="@+id/sp_category"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                app:helperText="Category"
+                android:adapter="@{vm.adapter}"
+                android:minHeight="48dp"
+                android:labelFor="@id/sp_category"
                 app:layout_constraintBottom_toTopOf="@+id/btn_add_idea"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_description">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:hint="@string/select_category"
-                    android:labelFor="@id/sp_category"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/et_description" />
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_idea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="einrechten"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:onClickListener="@{()-> vm.addIdea()}"
+                android:text="einrechten"
                 android:textColor="@color/black"
                 app:cornerRadius="@dimen/_3sdp"
                 app:layout_constraintBottom_toBottomOf="parent"

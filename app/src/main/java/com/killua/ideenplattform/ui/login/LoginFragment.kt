@@ -1,12 +1,10 @@
 package com.killua.ideenplattform.ui.login
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.killua.ideenplattform.MainActivity
 import com.killua.ideenplattform.R
 

@@ -8,8 +8,8 @@ data class CategoryCaching(
     @PrimaryKey(autoGenerate = false)
     val id: String = "",
     //example: sport-and-fun
-    val name_en: String,
+    val name_en: String = "",
     //  example: Sport & Fun
-    val name_de: String
+    val name_de: String = ""
     //example: Sport & Spaß
 )

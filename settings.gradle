@@ -5,7 +5,9 @@ dependencyResolutionManagement {
         mavenCentral()
         //noinspection JcenterRepositoryObsolete,GrDeprecatedAPIUsage
         jcenter() // Warning: this repository is going to shut down soon
-    }
+        maven { url "https://jitpack.io" }
+
+ }
 }
 rootProject.name = "Ideenplattform"
 include ':app'

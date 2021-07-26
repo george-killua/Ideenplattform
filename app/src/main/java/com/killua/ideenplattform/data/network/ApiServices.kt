@@ -7,6 +7,7 @@ import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -57,11 +58,11 @@ interface ApiServices {
     suspend fun getAllIdeas(@QueryMap categoryId: String): Response<ArrayList<Idea>>
 
     @Multipart
-    @POST("idea/")
+    @POST("idea")
     suspend fun createNewIdea(
-        @Body createIdeeReq: CreateIdeeReq,
-        @Part image: MultipartBody.Part
-    ): Response<ResponseHandler>
+        @Part("body") items: RequestBody,
+        @Part image: MultipartBody.Part? = null
+    ): Response<Idea>
 
     @GET("idea/")
     suspend fun getIdeaWithId(@Query("ideaId") ideaId: String): Response<Idea>
@@ -84,16 +85,16 @@ interface ApiServices {
         @Body releaseReq: IdeaReleaseReq
     ): Response<ResponseHandler>
 
-    @POST("idea/{ideaId}/comment")
+    @POST("idea/{ideaId}/tv_comment")
     suspend fun createComment(
         @Path("ideaId") ideaId: String,
         @Body createCommentReq: CreateCommentReq
     ): Response<ResponseHandler>
 
-    @GET("idea/{ideaId}/comment")
+    @GET("idea/{ideaId}/tv_comment")
     suspend fun getComments(@Path("ideaId") ideaId: String): Response<CommentList>
 
-    @DELETE("idea/{ideaId}/comment/{commentId}")
+    @DELETE("idea/{ideaId}/tv_comment/{commentId}")
     suspend fun deleteComments(
         @Path("ideaId") ideaId: String,
         @Path("commentId") commentId: String

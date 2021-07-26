@@ -6,20 +6,20 @@ import com.google.gson.reflect.TypeToken
 import com.killua.ideenplattform.data.models.local.IdeaRatingCaching
 import java.lang.reflect.Type
 
-class IdeaRatingArrayConverter{
+class IdeaRatingArrayConverter {
 
-        @TypeConverter
-        fun stringToWeathers(json : String?) : Array<IdeaRatingCaching> {
-            val gson = Gson()
-            val type : Type = object : TypeToken<Array<IdeaRatingCaching?>?>() {}.type
-            return gson.fromJson(json, type)
-        }
+    @TypeConverter
+    fun stringToWeathers(json: String?): Array<IdeaRatingCaching> {
+        val gson = Gson()
+        val type: Type = object : TypeToken<Array<IdeaRatingCaching?>?>() {}.type
+        return gson.fromJson(json, type)
+    }
 
-        @TypeConverter
-        fun weathersToString(array : Array<IdeaRatingCaching?>?) : String {
-            val gson = Gson()
-            val type : Type = object : TypeToken<Array<IdeaRatingCaching?>?>() {}.type
-            return gson.toJson(array, type)
-        }
+    @TypeConverter
+    fun weathersToString(array: Array<IdeaRatingCaching?>?): String {
+        val gson = Gson()
+        val type: Type = object : TypeToken<Array<IdeaRatingCaching?>?>() {}.type
+        return gson.toJson(array, type)
+    }
 
 }

@@ -1,13 +1,15 @@
 package com.killua.ideenplattform.data.repository
 
 import com.killua.ideenplattform.data.models.api.CommentList
+import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface MainRepository {
-    suspend fun login(email:String,password:String):Flow<RepoResultResult<Boolean>>
+    suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>>
     suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>>
     suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
     suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
@@ -24,11 +26,11 @@ interface MainRepository {
     suspend fun getCategoryWithId(id: String): Flow<RepoResultResult<CategoryCaching>>
     suspend fun createNewIdea(
         createIdeeReq: CreateIdeeReq,
-        path:String
-    ): Flow<RepoResultResult<Nothing>>
+        file: File?
+    ): Flow<RepoResultResult<Idea?>>
 
     suspend fun getAllIdeas(): Flow<RepoResultResult<ArrayList<Any>>>
-    suspend fun getIdeaWithId( ideaId: String): Flow<RepoResultResult<Any>>
+    suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>>
     suspend fun updateIdeaWithId(
         ideaId: String,
         createIdeeReq: CreateIdeeReq

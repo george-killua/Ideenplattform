@@ -10,14 +10,19 @@ data class UserCaching(
     @SerializedName("id")
     val userId: String = ""
     //example: 490151ea-e5bf-4f98-9337-fa4d451d7175
-    , val email: String,
+    , val email: String = "",
     //example: max.mustermann@example.org
 
-    val firstname: String,
+    val firstname: String = "",
     //example: Max
-    val lastname: String,
+    val lastname: String = "",
     //example: Mustermann
-    val profilePicture: String,
+    val profilePicture: String = "",
     //example: https://ideenmanagement.tailored-apps.com/image/profile/some-url.png
-    val isManager: Boolean
+    val isManager: Boolean = false
 )
+{
+  val fullName:String
+  get() = "$firstname $lastname"
+}
+

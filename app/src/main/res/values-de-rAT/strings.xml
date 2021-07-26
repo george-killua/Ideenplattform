@@ -2,4 +2,32 @@
 <resources>
     <string name="app_name">Ideenplattform</string>
     <string name="hochladen">HOCHLADEN</string>
+    <string name="title_home_idea">Ideen</string>
+    <string name="title_top_ranked_ideas">Top Ranked</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_register_idea">Registrieren</string>
+    <string name="title_details_idea">Ideendetails</string>
+    <string name="title_edit_idea">Idee bearbeiten</string>
+    <string name="title_new_idea">Idee hinzufügen</string>
+    <string name="username">Nutzername</string>
+    <string name="password">Passwort</string>
+    <string name="role">"Rolle : "</string>
+    <string name="last_name">Nachname</string>
+    <string name="first_name">Vorname</string>
+    <string name="sign_out">abmelden</string>
+    <string name="edit_profile">Profil bearbeiten</string>
+    <string name="abort">abbrechen</string>
+    <string name="share_idea_title">Idee freigaben</string>
+    <string name="share_idea">freigaben</string>
+    <string name="option">Optionen</string>
+    <string name="select_category">Kategorie wählen</string>
+    <string name="description">Beschreibung</string>
+    <string name="name">Name</string>
+    <string name="comments">kommentaren</string>
+    <string name="rate_image">Bewertung</string>
+    <string name="submit">Einreichen</string>
+    <string name="idea_picture">Idee Foto</string>
+    <string name="register">regitrieren</string>
+    <string name="login">anmeldung</string>
+    <string name="add_idea_image_details">idee hinzufügen</string>
 </resources>

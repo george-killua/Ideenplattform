@@ -1,20 +1,32 @@
 <resources>
     <string name="app_name">Ideenplattform</string>
-    <string name="title_home" translatable="false">Home</string>
-    <string name="title_dashboard" translatable="false">Dashboard</string>
-    <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="Benutzername" translatable="false">Benutzername</string>
-    <string name="password" translatable="false">Password</string>
-    <string name="login" translatable="false">login</string>
-    <string name="register" translatable="false">register</string>
-    <string name="add_idea" translatable="false">new idea</string>
-    <string name="idea_picture" translatable="false">Idea picture</string>
-    <string name="comment" translatable="false">Comments</string>
-    <string name="rate_image" translatable="false">Rating</string>
-    <string name="comments" translatable="false">Comments</string>
-    <string name="benutzername" translatable="false">Benutzername</string>
+    <string name="title_home_idea">Ideas</string>
+    <string name="title_top_ranked_ideas">Top Ranked</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_register_idea">Register</string>
+    <string name="title_details_idea">Idea Details</string>
+    <string name="title_edit_idea">Edit Idea</string>
+    <string name="title_new_idea">add Idea</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
+    <string name="idea_picture">Idea picture</string>
+    <string name="submit">Submit</string>
+    <string name="rate_image">Rating</string>
+    <string name="comments">Comments</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="select_category">select category</string>
-
+    <string name="option">options</string>
+    <string name="share_idea">share it</string>
+    <string name="share_idea_title">share the Idea</string>
+    <string name="abort">abort</string>
+    <string name="edit_profile">edit Profile</string>
+    <string name="add_idea_image_details">add Idea</string>
+    <string name="sign_out">sign out</string>
+    <string name="first_name">Firstname</string>
+    <string name="last_name">Lastname</string>
+    <string name="role">Role : </string>
+    <string name="hochladen">Upload</string>
 </resources>

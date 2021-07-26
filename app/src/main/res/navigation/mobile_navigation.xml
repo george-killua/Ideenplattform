@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/management_idea_fragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/home_idea_fragment"
         android:name="com.killua.ideenplattform.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_home_idea"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/loginFragment"
@@ -19,12 +19,21 @@
         android:id="@+id/detailFragment"
         android:name="com.killua.ideenplattform.ui.details.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_detailFragment_to_management_idea_fragment"
+            app:destination="@id/management_idea_fragment" />
+    </fragment>
     <fragment
-        android:id="@+id/newIdeeFragment"
-        android:name="com.killua.ideenplattform.ui.newidee.NewIdeeFragment"
+        android:id="@+id/management_idea_fragment"
+        android:name="com.killua.ideenplattform.ui.newidee.ManagementIdeaFragment"
         android:label="fragment_new_idee"
-        tools:layout="@layout/fragment_new_idee" />
+        tools:layout="@layout/fragment_new_idee" >
+        <argument
+            android:name="id_of_idea"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.killua.ideenplattform.ui.signup.SignupFragment"

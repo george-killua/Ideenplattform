@@ -1,11 +1,15 @@
 package com.killua.ideenplattform.data.repository
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.killua.ideenplattform.data.caching.CategoryDao
 import com.killua.ideenplattform.data.caching.IdeaDao
 import com.killua.ideenplattform.data.caching.UserDao
 import com.killua.ideenplattform.data.models.api.CommentList
+import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.models.local.CategoryCaching
+import com.killua.ideenplattform.data.models.local.IdeaCaching
 import com.killua.ideenplattform.data.models.local.SharedPrefsUser
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.network.ApiServices
@@ -18,8 +22,10 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import java.io.File
+import java.lang.reflect.Type
 
 
 class MainRepositoryImpl(
@@ -30,20 +36,19 @@ class MainRepositoryImpl(
     context: Context
 ) :
     MainRepository {
-    val sharedPrefsHandler by lazy {
+    private val sharedPrefsHandler by lazy {
         SharedPreferencesHandler(context)
     }
-    var password: String = ""
+    private var password: String = ""
 
     override suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>> {
         val oldUser = sharedPrefsHandler.userLoader
         this.password = oldUser?.password ?: ""
-        val newUser = SharedPrefsUser("",email, password)
+        val newUser = SharedPrefsUser("", email, password)
         if (oldUser == null) {
             sharedPrefsHandler.saveUserContent(newUser)
-            this.password=password
-        }
-        else if (oldUser != newUser) sharedPrefsHandler.saveUserContent(newUser)
+            this.password = password
+        } else if (oldUser != newUser) sharedPrefsHandler.saveUserContent(newUser)
         return flow {
             getMe().collect {
                 emit(
@@ -115,8 +120,14 @@ class MainRepositoryImpl(
                 is NetworkResult.Success -> {
                     emit(RepoResultResult(res.data, true))
                     res.data?.let {
-                            sharedPrefsHandler.saveUserContent(SharedPrefsUser(it.userId,it.email,password))
-                        }
+                        sharedPrefsHandler.saveUserContent(
+                            SharedPrefsUser(
+                                it.userId,
+                                it.email,
+                                password
+                            )
+                        )
+                    }
                 }
                 is NetworkResult.Error -> {
                     val oldUser = sharedPrefsHandler.userLoader
@@ -155,12 +166,14 @@ class MainRepositoryImpl(
 
                 is NetworkResult.Success -> {
                     emit(RepoResultResult(null, true))
+                    getMe()
                 }
                 is NetworkResult.Error -> {
                     emit(RepoResultResult(null, false, res.message))
                 }
             }
         }.flowOn(Dispatchers.IO)
+
     }
 
     override suspend fun deleteImageOfUser(): Flow<RepoResultResult<Nothing>> = flow {
@@ -168,6 +181,7 @@ class MainRepositoryImpl(
 
             is NetworkResult.Success -> {
                 emit(RepoResultResult(null, true, "image deleted Successfully"))
+                getMe()
             }
             is NetworkResult.Error -> {
 
@@ -198,6 +212,8 @@ class MainRepositoryImpl(
             when (val res = safeApiCall(api.getCategory())) {
 
                 is NetworkResult.Success -> {
+                    categoryDao.getAllCategories()?.subtract(res.data!!)?.toTypedArray()
+                        ?.let { categoryDao.remove(*it) }
                     categoryDao.addCategories(*res.data!!.toTypedArray())
                     emit(RepoResultResult(res.data, true))
                 }
@@ -229,17 +245,33 @@ class MainRepositoryImpl(
 
     override suspend fun createNewIdea(
         createIdeeReq: CreateIdeeReq,
-        path: String
-    ): Flow<RepoResultResult<Nothing>> {
-        val file = File(path)
-        val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-        val bodyImage: MultipartBody.Part =
-            MultipartBody.Part.createFormData("user_pic", file.name, reqFile)
+        file: File?
+    ): Flow<RepoResultResult<Idea?>> {
+//body of idea request
+        val type: Type = object : TypeToken<CreateIdeeReq>() {}.type
+        val stringBody = Gson().toJson(createIdeeReq, type)
+        val requestBody = stringBody.toRequestBody("application/json".toMediaTypeOrNull())
+
+// image of idea request
+        val requestImage: RequestBody? = file?.asRequestBody("image/jpg".toMediaTypeOrNull())
+
+        val image: MultipartBody.Part? =
+            requestImage?.let { MultipartBody.Part.createFormData("files[0]", file.name, it) }
+
+        val apiRequest = if (image == null) api.createNewIdea(requestBody) else api.createNewIdea(
+            requestBody,
+            image
+        )
+
+
+
+
+
         return flow {
-            when (val res = safeApiCall(api.createNewIdea(createIdeeReq, bodyImage))) {
+            when (val res = safeApiCall(apiRequest)) {
 
                 is NetworkResult.Success -> {
-                    emit(RepoResultResult(null, true))
+                    emit(RepoResultResult(res.data, true))
                 }
                 is NetworkResult.Error -> {
                     emit(RepoResultResult(null, false, res.message))
@@ -257,7 +289,22 @@ class MainRepositoryImpl(
             if (repoResultResult.isNetworkingData) {
                 repoResultResult.data?.forEach {
                     try {
-                        ideasArray.addAll(safeApiCall(api.getAllIdeas(it.id)).data!!)
+                        val ideas = safeApiCall(api.getAllIdeas(it.id)).data!!
+                        ideasArray.addAll(ideas)
+                        getAllideaDBHelper(
+                            ideas.take(10).map { idea ->
+                                IdeaCaching(
+                                    ideaCachingId = idea.id,
+                                    authorId = idea.author!!.userId,
+                                    title = idea.title,
+                                    categoryId = idea.category!!.id,
+                                    description = idea.description,
+                                    created = idea.created,
+                                    lastUpdated = idea.lastUpdated,
+                                    imageUrl = idea.imageUrl
+                                )
+                            }
+                        )
                     } catch (e: java.lang.Exception) {
                         networkErrorMessage = e.localizedMessage!!
                         ideaDao.getAllIdeas()?.let { it1 -> ideasArray.addAll(it1) }
@@ -272,11 +319,16 @@ class MainRepositoryImpl(
         emit(RepoResultResult(ideasArray, isNetworkingData, networkErrorMessage))
     }.flowOn(Dispatchers.IO)
 
+    private fun getAllideaDBHelper(ideaCaching: List<IdeaCaching>) {
+        ideaDao.removeAll()
+        ideaDao.addIdeas(*ideaCaching.toTypedArray())
+    }
+
     override suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>> = flow {
         when (val res = safeApiCall(api.getIdeaWithId(ideaId))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(res.data, true, "rating deleted Successfully"))
+                emit(RepoResultResult(res.data, true))
             }
             is NetworkResult.Error -> {
                 val caching = ideaDao.getIdeaWithId(ideaId)
@@ -294,7 +346,7 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.updateIdeaWithId(ideaId, createIdeeReq))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
@@ -309,7 +361,7 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.deleteIdeaWithId(ideaId))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
@@ -329,10 +381,7 @@ class MainRepositoryImpl(
             is NetworkResult.Error -> {
                 val caching = ideaDao.getCityBySearchText(searchText)
                 emit(RepoResultResult(caching, false, res.message))
-
-
             }
-
         }
     }.flowOn(Dispatchers.IO)
 
@@ -344,15 +393,12 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.releaseIdea(ideaId, releaseReq))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
-
-
             }
         }
-        getComments(ideaId)
     }.flowOn(Dispatchers.IO)
 
 
@@ -363,22 +409,19 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.createComment(ideaId, createCommentReq))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
-
-
             }
         }
-        getComments(ideaId)
     }.flowOn(Dispatchers.IO)
 
     override suspend fun getComments(ideaId: String): Flow<RepoResultResult<CommentList>> = flow {
         when (val res = safeApiCall(api.getComments(ideaId))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(res.data, true, "rating deleted Successfully"))
+                emit(RepoResultResult(res.data, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
@@ -395,7 +438,7 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.deleteComments(ideaId, commentId))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
@@ -413,7 +456,7 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.postRating(ideaId, postRating))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rate Posted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))
@@ -428,7 +471,7 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.deleteRating(ideaId))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true, "rating deleted Successfully"))
+                emit(RepoResultResult(null, true))
             }
             is NetworkResult.Error -> {
                 emit(RepoResultResult(null, false, res.message))

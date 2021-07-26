@@ -89,7 +89,7 @@ class HomeViewModel(val context: Context) : BaseObservable(), KoinComponent {
                                             lastname = lastname
                                         )
                                     )*/
-                             //   adapter.submitList(userRepository.getAllIdeas())
+                                //   adapter.submitList(userRepository.getAllIdeas())
                                 this.copy(
                                     firstname = "",
                                     lastname = "",

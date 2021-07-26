@@ -41,6 +41,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:focusable="true"
             android:onClickListener="@{()-> mv.addIdea()}"
-            android:contentDescription="@string/add_idea" />
+            android:contentDescription="@string/add_idea_image_details" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
