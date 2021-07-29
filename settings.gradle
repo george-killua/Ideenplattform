@@ -8,10 +8,7 @@ dependencyResolutionManagement {
         maven {
             url "https://jitpack.io"
         }
-
-        mavenCentral()
-
- }
+    }
 }
 rootProject.name = "Ideenplattform"
 include ':app'

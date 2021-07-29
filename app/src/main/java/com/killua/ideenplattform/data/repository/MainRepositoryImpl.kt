@@ -310,7 +310,7 @@ class MainRepositoryImpl(
             }
                 is NetworkResult.Error -> {
                     val caching = ideaDao.getAllIdeas()?.map { IdeaCaching.transmitIdea(it,this@MainRepositoryImpl) }
-                //    emit(RepoResultResult(caching, false, res.message))
+                    emit(RepoResultResult(caching, false, res.message))
 
 
                 }
