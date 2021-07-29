@@ -85,8 +85,6 @@ class MainRepositoryImpl(
                 }
                 is NetworkResult.Error -> {
                     emit(RepoResultResult(null, false, res.message))
-
-
                 }
             }
             getAllUsers()

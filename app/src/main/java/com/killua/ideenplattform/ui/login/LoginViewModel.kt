@@ -2,15 +2,10 @@ package com.killua.ideenplattform.ui.login
 
 import android.content.Context
 import android.util.Log
-import android.widget.EditText
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.InverseBindingAdapter
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.killua.ideenplattform.data.repository.MainRepository
-import com.killua.ideenplattform.ui.newidee.ManagementIdeeViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 
@@ -31,6 +26,7 @@ class LoginViewModel(val context: Context, private val userRepository: MainRepos
     fun registerAc(){
         onAction(Action.RegisterClicked)
     }
+
 
     data class State(
         var userName: String = "",
@@ -83,9 +79,6 @@ class LoginViewModel(val context: Context, private val userRepository: MainRepos
                                 passwordIsEmpty = true
                             )
                         )
-                    }
-                    else -> {
-                        MyApplication.instance.isOnline() // ??
                     }
                 }
         }
