@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="vmLogin"
+            type="com.killua.ideenplattform.ui.login.LoginViewModel" />
 
     </data>
 
@@ -18,31 +21,37 @@
             android:layout_height="200dp"
             android:padding="30dp"
             android:src="@drawable/rb_logo"
-            app:layout_constraintBottom_toTopOf="@+id/etUserName"
+            app:layout_constraintBottom_toTopOf="@+id/et_username"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUserName"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen20dp"
             android:background="@color/grey"
-            android:hint="@string/Benutzername"
+            android:hint="@string/username"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RB_Logo" />
+            app:layout_constraintTop_toBottomOf="@+id/RB_Logo">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={vmLogin.userName}"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen20dp"
-            android:background="@color/grey"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="@dimen/dimen15dp"
@@ -50,10 +59,17 @@
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etUserName" />
+            app:layout_constraintTop_toBottomOf="@+id/et_username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={vmLogin.password}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen20dp"
@@ -64,15 +80,16 @@
             app:layout_constraintBottom_toTopOf="@+id/btnRegister"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etPassword"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toBottomOf="@+id/et_Password"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:onClick="@={() -> vmLogin.loginAc()"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen20dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:backgroundTint="@color/white"
             android:padding="@dimen/dimen15dp"
             android:text="@string/register"
@@ -81,8 +98,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
+            app:layout_constraintTop_toBottomOf="@+id/btn_login"
+            android:onClick="@={() -> vmLogin.registerAc()"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

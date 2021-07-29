@@ -3,37 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.killua.ideenplattform.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/title_home_idea">
+        <action
+            android:id="@+id/home_to_detail"
+            app:destination="@id/detailFragment" />
+        <argument
+            android:name="isTopRanked"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/home_to_add"
+            app:destination="@id/management_idea_fragment">
+            <argument
+                android:name="id_of_idea"
+                android:defaultValue="@null" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.killua.ideenplattform.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.killua.ideenplattform.ui.details.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/detail_to_edit"
+            app:destination="@id/management_idea_fragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
     <fragment
-        android:id="@+id/newIdeeFragment"
-        android:name="com.killua.ideenplattform.ui.newidee.NewIdeeFragment"
+        android:id="@+id/management_idea_fragment"
+        android:name="com.killua.ideenplattform.ui.newidee.ManagementIdeaFragment"
         android:label="fragment_new_idee"
-        tools:layout="@layout/fragment_new_idee" />
+        tools:layout="@layout/fragment_new_idee" >
+        <argument
+            android:name="id_of_idea"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/manag_to_detail"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.killua.ideenplattform.ui.signup.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/navigation_profile"
         android:name="com.killua.ideenplattform.ui.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_top_ranked"
+        android:name="com.killua.ideenplattform.ui.toprank.TopRankFragment"
+        android:label="@string/title_top_ranked_ideas" />
 
 </navigation>

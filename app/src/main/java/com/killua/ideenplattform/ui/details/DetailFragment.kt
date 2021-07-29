@@ -1,26 +1,60 @@
 package com.killua.ideenplattform.ui.details
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.killua.ideenplattform.R
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.killua.ideenplattform.databinding.FragmentDetailBinding
+import com.killua.ideenplattform.ui.newidee.ManagementIdeaFragmentArgs
+import org.koin.android.ext.android.inject
 
 class DetailFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = DetailFragment()
-    }
+    private val detailViewModel: DetailViewModel by inject()
+    private lateinit var binding: FragmentDetailBinding
 
-    private lateinit var viewModel: DetailViewModel
+    private val args: ManagementIdeaFragmentArgs by navArgs()
+    var isManager = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val ideaId = args.idOfIdea
+        detailViewModel.onAction(DetailViewModel.Action.SetupFragment(ideaId!!))
+        detailViewModel.stateLiveData.observe(viewLifecycleOwner, {
+            isManager = it.isManager == true
+            it.isMyIdea
+        })
+        setHasOptionsMenu(true)
+    }
+
+    private fun showToast(message: String?) {
+        if (message != null) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (android.R.id.home == item.itemId) {
+            this.findNavController().popBackStack()
+            return true
+        }
+
+        return false    }
 }

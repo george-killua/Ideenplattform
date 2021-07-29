@@ -1,15 +1,17 @@
 package com.killua.ideenplattform.data.repository
 
-import com.killua.ideenplattform.data.models.api.CommentList
+import com.killua.ideenplattform.data.models.api.Idea
+import com.killua.ideenplattform.data.models.api.IdeaComment
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.requests.*
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface MainRepository {
-    suspend fun login(email:String,password:String):Flow<RepoResultResult<Boolean>>
+    suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>>
     suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>>
-    suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
+    suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Boolean>>
     suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
     suspend fun getMe(): Flow<RepoResultResult<UserCaching?>>
     suspend fun getUserId(id: String): Flow<RepoResultResult<UserCaching>>
@@ -24,11 +26,11 @@ interface MainRepository {
     suspend fun getCategoryWithId(id: String): Flow<RepoResultResult<CategoryCaching>>
     suspend fun createNewIdea(
         createIdeeReq: CreateIdeeReq,
-        path:String
-    ): Flow<RepoResultResult<Nothing>>
+        file: File?
+    ): Flow<RepoResultResult<Idea?>>
 
-    suspend fun getAllIdeas(): Flow<RepoResultResult<ArrayList<Any>>>
-    suspend fun getIdeaWithId( ideaId: String): Flow<RepoResultResult<Any>>
+    suspend fun getAllIdeas(): Flow<RepoResultResult<List<Idea>>>
+    suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>>
     suspend fun updateIdeaWithId(
         ideaId: String,
         createIdeeReq: CreateIdeeReq
@@ -39,14 +41,14 @@ interface MainRepository {
     suspend fun releaseIdea(
         ideaId: String,
         releaseReq: IdeaReleaseReq
-    ): Flow<RepoResultResult<Nothing>>
+    ): Flow<RepoResultResult<Boolean>>
 
     suspend fun createComment(
         ideaId: String,
         createCommentReq: CreateCommentReq
     ): Flow<RepoResultResult<Nothing>>
 
-    suspend fun getComments(ideaId: String): Flow<RepoResultResult<CommentList>>
+    suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>>
     suspend fun deleteComments(ideaId: String, commentId: String): Flow<RepoResultResult<Nothing>>
     suspend fun postRating(ideaId: String, postRating: PostRating): Flow<RepoResultResult<Nothing>>
     suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Nothing>>
