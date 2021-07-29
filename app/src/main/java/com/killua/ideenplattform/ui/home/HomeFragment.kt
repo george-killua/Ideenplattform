@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import com.killua.ideenplattform.databinding.FragmentHomeBinding
 import org.koin.android.ext.android.inject
 
@@ -13,8 +15,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by inject()
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -24,22 +25,27 @@ class HomeFragment : Fragment() {
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        viewModel.onAction(HomeViewModel.Action.SetupFragment(view, false))
+        viewModel.stateLiveData.observe(viewLifecycleOwner, { state ->
+            binding.progressBar.visibility =
+                if (state.isLoadingProgressBar) View.VISIBLE else View.GONE
+            state.toastMessage?.let { message -> showToast(message) }
+            if (state.navToNewIdea == true) toNewIdeaNavigation()
+        })
+
         binding.mv = viewModel
         binding.executePendingBindings()
-        viewModel.subscribeToStateChanges { state ->
-            if (state.toastMessage != null)
-                showToast(state.toastMessage)
-            if (state.dialogShow != null)
-                state.dialogShow.show()
-        }
+
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -49,4 +55,11 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun toNewIdeaNavigation() {
+        val detailsToEdit: NavDirections =
+            HomeFragmentDirections.homeToAdd()
+        this.findNavController().navigate(detailsToEdit)
+    }
+
 }

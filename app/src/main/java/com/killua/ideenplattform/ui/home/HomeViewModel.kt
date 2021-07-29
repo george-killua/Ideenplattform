@@ -1,111 +1,115 @@
 package com.killua.ideenplattform.ui.home
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
+import android.util.Log
+import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import com.killua.ideenplattform.data.models.api.CommentList
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.killua.ideenplattform.data.repository.MainRepository
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
-class HomeViewModel(val context: Context) : BaseObservable(), KoinComponent {
-    private val userRepository: MainRepository by inject()
+class HomeViewModel(private val mainRepository: MainRepository) : BaseObservable(), IdeaOnClick {
+    private val lang: String = Locale.getDefault().displayLanguage
+    var stateLiveData = MutableLiveData<State>()
 
-    @Bindable
-    val adapter: IdeasAdapter = IdeasAdapter()
 
-    fun showComments(ideaCommentList: CommentList) {
-
+    @get:Bindable
+    val adapter by lazy {
+        IdeasAdapter(this)
     }
 
-    fun addIdea() {
+    @get:Bindable
+    var isOnline = false
+    var view: View? = null
 
-    }
-
-    private fun dialog(): AlertDialog {
-        val dialog = AlertDialog.Builder(context)
-        return dialog.create()
+    init {
+        runBlocking {
+            mainRepository.login("max.mustermann@example.org", "supersecurepassword1234").collect {
+                if (it.data == true) Log.e("george", it.networkErrorMessage ?: "success")
+            }
+        }
+        isOnline = MyApplication.instance.isOnline()
     }
 
     data class State(
-        val firstname: String = "",
-        val lastname: String = "",
+        val isLoadingProgressBar: Boolean = false,
+        val navToDetail: String? = null,
+        val showIsNotOnline: Boolean? = null,
         val toastMessage: String? = null,
-        val dialogShow: Dialog? = null
+        val navToNewIdea:Boolean?=false
     )
 
     sealed class Action {
-        object LoadIdeas : Action()
-        data class FirstnameETChanged(val firstname: String) : Action()
-        data class LastnameETChanged(val lastname: String) : Action()
-        object AddClicked : Action()
-        object dialogShowAction : Action()
+        data class SetupFragment(val view: View, val isTopRank: Boolean = false) :
+            Action()
+
+        data class DetailsIdea(val ideaId: String) : Action()
+        object AddIdea : Action()
     }
-
-    private var currentState: State = State()
-
-    private var onStateChanged: ((State) -> Unit)? = null
 
     fun onAction(action: Action) {
-        currentState = when (action) {
-            is Action.LoadIdeas -> {
-                //adapter.submitList(userRepository.getAllIdeas())
-                currentState.copy(
-                    toastMessage = null
-                )
-            }
-            is Action.FirstnameETChanged -> currentState.copy(
-                firstname = action.firstname,
-                toastMessage = null
-            )
-            is Action.LastnameETChanged -> currentState.copy(
-                lastname = action.lastname,
-                toastMessage = null,
-            )
-            is Action.dialogShowAction ->
-                currentState.copy(
-                    dialogShow = dialog()
-                )
+        when (action) {
+            is Action.SetupFragment -> {
+                view = action.view
 
-            is Action.AddClicked -> (
-                    when {
-                        currentState.firstname.isBlank() -> {
-                            currentState.copy(
-                                toastMessage = "Firstname is missed"
-                            )
-                        }
-                        currentState.lastname.isBlank() -> {
-                            currentState.copy(
-                                toastMessage = "Lastname is missed"
-                            )
-                        }
-                        else -> {
-                            currentState.apply {
-                                /*    userRepository.insertUser(
-                                        UserEntity(
-                                            firstname = firstname
-                                            lastname = lastname
-                                        )
-                                    )*/
-                             //   adapter.submitList(userRepository.getAllIdeas())
-                                this.copy(
-                                    firstname = "",
-                                    lastname = "",
-                                    toastMessage = "User Added"
+                runBlocking {
+                    stateLiveData.postValue(State(isLoadingProgressBar = true))
+                    mainRepository.getAllIdeas().collect { repoResult ->
+                        val ideaType = repoResult.data
+                        when {
+                            ideaType.isNullOrEmpty() -> {
+                                stateLiveData.postValue(State(toastMessage = "some thing went wrong"))
+                            }
+                            repoResult.isNetworkingData -> {
+                                if (action.isTopRank) {
+                                    ideaType.sortedBy { obj -> obj.ratings.size }
+                                }
+                                with(adapter) { submitList(ideaType) }
+                                stateLiveData.postValue(
+                                    State(
+                                        isLoadingProgressBar = false,
+                                        showIsNotOnline = isOnline
+                                    )
                                 )
                             }
+
                         }
                     }
-                    )
+
+                }
+            }
+
+
+            is Action.DetailsIdea -> {
+                if (!isOnline) {
+                    stateLiveData.postValue(State(toastMessage = "this can't be done offline"))
+                    return
+                }
+
+            }
+            Action.AddIdea -> {
+            stateLiveData.postValue(State(navToNewIdea = true))
+
+            }
         }
-        onStateChanged?.invoke(currentState)
     }
 
-    fun subscribeToStateChanges(onStateChanged: (State) -> Unit) {
-        onStateChanged.invoke(currentState)
-        this.onStateChanged = onStateChanged
+    override fun clicked(ideaId: String) {
+        onAction(Action.DetailsIdea(ideaId))
+    }
+
+    fun addIdea() {
+        onAction(Action.AddIdea)
     }
 
 }
+

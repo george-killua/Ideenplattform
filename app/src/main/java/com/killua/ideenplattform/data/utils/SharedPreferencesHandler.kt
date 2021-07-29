@@ -31,12 +31,8 @@ class SharedPreferencesHandler(val context: Context) {
     companion object {
         private val gson = Gson()
         private val type: Type = object : TypeToken<SharedPrefsUser?>() {}.type
-        fun stringToUser(json: String?): SharedPrefsUser? {
-            return gson.fromJson(json, type)
-        }
 
-        fun userToString(user: SharedPrefsUser?): String {
-            return gson.toJson(user, type)
-        }
+        fun stringToUser(json: String?): SharedPrefsUser? = gson.fromJson(json, type)
+        fun userToString(user: SharedPrefsUser?): String = gson.toJson(user, type)
     }
 }

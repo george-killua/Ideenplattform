@@ -18,18 +18,20 @@ object PicassoFactory : KoinComponent {
         val client: OkHttpClient by inject()
         val picasso = Picasso.Builder(MyApplication.instance).downloader(OkHttp3Downloader(client))
         picasso.indicatorsEnabled(true)
-        Picasso.setSingletonInstance(picasso.build())
+if(Picasso.get()==null) Picasso.setSingletonInstance(picasso.build())
         return picasso.build()
     }
 }
 
 object DataBindingAdapters {
     @BindingAdapter("imageUrl")
+    @JvmStatic
     fun setImageUri(view: ImageView, imageUri: String?) {
-        if (imageUri == null) {
+        if (imageUri.isNullOrBlank()) {
             view.setImageURI(null)
         } else {
             PicassoFactory.build().load(imageUri).fit().placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         Log.d("PICASSO", "It should have loaded...")
@@ -41,5 +43,4 @@ object DataBindingAdapters {
                 })
         }
     }
-
 }

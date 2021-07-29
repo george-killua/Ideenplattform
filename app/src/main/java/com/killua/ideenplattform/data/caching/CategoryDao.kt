@@ -14,6 +14,9 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCategories(vararg categoryCaching: CategoryCaching)
 
+    @Query("select count(*) from categorycaching ")
+    fun categoriesCount(): Int
+
     @Delete
-    fun remove(categoryCaching: CategoryCaching)
+    fun remove(vararg categoryCaching: CategoryCaching)
 }
