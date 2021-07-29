@@ -87,16 +87,16 @@ interface ApiServices {
         @Body releaseReq: IdeaReleaseReq
     ): Response<ResponseHandler>
 
-    @POST("idea/{ideaId}/tv_comment")
+    @POST("idea/{ideaId}/comment")
     suspend fun createComment(
         @Path("ideaId") ideaId: String,
         @Body createCommentReq: CreateCommentReq
     ): Response<ResponseHandler>
 
-    @GET("idea/{ideaId}/tv_comment")
+    @GET("idea/{ideaId}/")
     suspend fun getComments(@Path("ideaId") ideaId: String): Response<List<IdeaComment>>
 
-    @DELETE("idea/{ideaId}/tv_comment/{commentId}")
+    @DELETE("idea/{ideaId}/comment/{commentId}")
     suspend fun deleteComments(
         @Path("ideaId") ideaId: String,
         @Path("commentId") commentId: String

@@ -18,6 +18,7 @@ import com.killua.ideenplattform.data.requests.*
 import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -62,7 +63,56 @@ class MainRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
     }
+    override fun postscher(){
+     /*   runBlocking (Dispatchers.Unconfined){
+            getAllIdeas().collect {
+                it.data!!.forEach {
+                    createComment(it.id,CreateCommentReq("          _____            _____          \n" +
+                            "         /\\    \\          /\\    \\         \n" +
+                            "        /::\\____\\        /::\\    \\        \n" +
+                            "       /:::/    /       /::::\\    \\       \n" +
+                            "      /:::/    /       /::::::\\    \\      \n" +
+                            "     /:::/    /       /:::/\\:::\\    \\     \n" +
+                            "    /:::/    /       /:::/  \\:::\\    \\    \n" +
+                            "   /:::/    /       /:::/    \\:::\\    \\   \n" +
+                            "  /:::/    /       /:::/    / \\:::\\    \\  \n" +
+                            " /:::/    /       /:::/    /   \\:::\\ ___\\ \n" +
+                            "/:::/____/       /:::/____/  ___\\:::|    |\n" +
+                            "\\:::\\    \\       \\:::\\    \\ /\\  /:::|____|\n" +
+                            " \\:::\\    \\       \\:::\\    /::\\ \\::/    / \n" +
+                            "  \\:::\\    \\       \\:::\\   \\:::\\ \\/____/  \n" +
+                            "   \\:::\\    \\       \\:::\\   \\:::\\____\\    \n" +
+                            "    \\:::\\    \\       \\:::\\  /:::/    /    \n" +
+                            "     \\:::\\    \\       \\:::\\/:::/    /     \n" +
+                            "      \\:::\\    \\       \\::::::/    /      \n" +
+                            "       \\:::\\____\\       \\::::/    /       \n" +
+                            "        \\::/    /        \\::/____/        \n" +
+                            "         \\/____/                          \n" +
+                            "                                    ")).collect{
+                        print("${it.data} ,${it.networkErrorMessage}")
+                    }
+                }
+            }
+        }*/
+    }
+     fun postd() {
+        runBlocking(Dispatchers.Unconfined) {
+            getAllIdeas().collect {
+                it.data!!.forEach { idea ->
+                    val comment: List<IdeaComment> =
+                        idea.comments.filter { it.message == "nice work :)" }
 
+                    comment.forEach {
+                        deleteComments(idea.id, it.id).collect {
+                            print("${it.isNetworkingData}  ${it.networkErrorMessage}")
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
 
     override suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>> =
         flow {
@@ -416,11 +466,13 @@ class MainRepositoryImpl(
                 emit(RepoResultResult(data = true, isNetworkingData = true))
             }
             is NetworkResult.Error -> {
-                emit(RepoResultResult(
-                    data = false,
-                    isNetworkingData = false,
-                    networkErrorMessage = res.message
-                ))
+                emit(
+                    RepoResultResult(
+                        data = false,
+                        isNetworkingData = false,
+                        networkErrorMessage = res.message
+                    )
+                )
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -429,14 +481,26 @@ class MainRepositoryImpl(
     override suspend fun createComment(
         ideaId: String,
         createCommentReq: CreateCommentReq
-    ): Flow<RepoResultResult<Nothing>> = flow {
-        when (val res = safeApiCall(api.createComment(ideaId, createCommentReq))) {
+    ): Flow<RepoResultResult<Boolean>> = flow {
+
+        val res = safeApiCall(
+            api.createComment(ideaId, createCommentReq)
+        )
+        val resCord = res
+        print(resCord.data.toString())
+        when (res) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(null, true))
+                emit(RepoResultResult(data = true, isNetworkingData = true))
             }
             is NetworkResult.Error -> {
-                emit(RepoResultResult(null, false, res.message))
+                emit(
+                    RepoResultResult(
+                        data = false,
+                        isNetworkingData = false,
+                        networkErrorMessage = res.message
+                    )
+                )
             }
         }
     }.flowOn(Dispatchers.IO)

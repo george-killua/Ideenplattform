@@ -31,6 +31,7 @@
     <string name="upload">Upload</string>
     <string name="edit">Edit</string>
     <string name="idea_image">idea Image</string>
+    <string name="add_comment">add Comment</string>
     <string-array name="rating_data">
         <item>Really cool</item>
         <item>Cool</item>

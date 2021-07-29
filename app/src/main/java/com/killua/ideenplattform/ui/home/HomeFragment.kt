@@ -10,6 +10,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.killua.ideenplattform.databinding.FragmentHomeBinding
+import com.killua.ideenplattform.ui.safeNavigate
 import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment() {
@@ -24,7 +25,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        viewModel.onAction( HomeViewModel.Action.post)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -61,14 +62,14 @@ class HomeFragment : Fragment() {
         _binding = null
     }
     private fun toDetailNavigation(ideaId:String) {
-        val detailsToEdit: NavDirections =
+        val homeToDetail: NavDirections =
             HomeFragmentDirections.homeToDetail(ideaId)
-        this.findNavController().navigate(detailsToEdit)
+        this.findNavController().navigate(homeToDetail)
     }
     private fun toNewIdeaNavigation() {
-        val detailsToEdit: NavDirections =
+        val homeToNewIdea: NavDirections =
             HomeFragmentDirections.homeToAdd()
-        this.findNavController().navigate(detailsToEdit)
+        this.findNavController().safeNavigate(homeToNewIdea)
     }
 
 }

@@ -3,6 +3,8 @@ package com.killua.ideenplattform.ui
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.squareup.picasso.Callback
@@ -22,7 +24,10 @@ if(Picasso.get()==null) Picasso.setSingletonInstance(picasso.build())
         return picasso.build()
     }
 }
+fun NavController.safeNavigate(direction: NavDirections) {
+    currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
 
+}
 object DataBindingAdapters {
     @BindingAdapter("imageUrl")
     @JvmStatic

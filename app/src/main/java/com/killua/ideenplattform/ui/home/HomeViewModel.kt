@@ -47,13 +47,16 @@ class HomeViewModel(private val mainRepository: MainRepository) : BaseObservable
     sealed class Action {
         data class SetupFragment(val view: View, val isTopRank: Boolean = false) :
             Action()
-
+object post:Action()
         data class DetailsIdea(val ideaId: String) : Action()
         object AddIdea : Action()
     }
 
     fun onAction(action: Action) {
         when (action) {
+            is Action.post->{
+                mainRepository.postscher()
+            }
             is Action.SetupFragment -> {
                 view = action.view
 

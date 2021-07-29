@@ -21,7 +21,7 @@ interface MainRepository {
         userId: String,
         updateManagerStatus: UpdateManagerStatus
     ): Flow<RepoResultResult<Nothing>>
-
+    fun postscher()
     suspend fun getAllCategories(): Flow<RepoResultResult<ArrayList<CategoryCaching>>>
     suspend fun getCategoryWithId(id: String): Flow<RepoResultResult<CategoryCaching>>
     suspend fun createNewIdea(
@@ -46,7 +46,7 @@ interface MainRepository {
     suspend fun createComment(
         ideaId: String,
         createCommentReq: CreateCommentReq
-    ): Flow<RepoResultResult<Nothing>>
+    ): Flow<RepoResultResult<Boolean>>
 
     suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>>
     suspend fun deleteComments(ideaId: String, commentId: String): Flow<RepoResultResult<Nothing>>
