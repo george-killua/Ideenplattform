@@ -23,9 +23,10 @@
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             android:layout_margin="@dimen/_3sdp"
+            android:src="@drawable/ic_person"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:imageUrl="@{data.author.profilePicture}" />
+            imageUrl="@{data.author.profilePicture}" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -83,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/post_image" />
 
-        <com.github.pgreze.reactions.ReactionView
+        <com.ritik.emojireactionlibrary.EmojiReactionView
             android:id="@+id/rate"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
@@ -91,7 +92,8 @@
             android:contentDescription="@string/rate_image"
             android:src="@drawable/ic_like"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier2" />
+            app:layout_constraintTop_toBottomOf="@id/barrier2"
+            bind:ignore="MissingClass" />
 
 
         <TextView

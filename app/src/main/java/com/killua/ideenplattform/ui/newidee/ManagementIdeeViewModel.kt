@@ -3,19 +3,22 @@ package com.killua.ideenplattform.ui.newidee
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
+import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
+import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.models.local.CategoryCaching
+import com.killua.ideenplattform.data.models.local.IdeaCaching
 import com.killua.ideenplattform.data.repository.MainRepository
 import com.killua.ideenplattform.data.requests.CreateIdeeReq
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import okhttp3.internal.wait
 import java.io.File
 import java.util.*
 
@@ -25,7 +28,8 @@ class ManagementIdeeViewModel(val context: Context, private val userRepository: 
     private val lang: String = Locale.getDefault().displayLanguage
     private val categoriesArray: ArrayList<CategoryCaching> = arrayListOf()
     private var selectedCategoryCaching: CategoryCaching? = null
-     val stateLiveData: MutableLiveData<State> = MutableLiveData<State>()
+    val stateLiveData: MutableLiveData<State> = MutableLiveData<State>()
+    val loadEffectLiveData: MutableLiveData<LoadEffect> = MutableLiveData<LoadEffect>()
 
     // xml prop
     @get:Bindable
@@ -71,8 +75,19 @@ class ManagementIdeeViewModel(val context: Context, private val userRepository: 
                     categoriesArray.addAll(categoriesList)
                 }
             }
+
         }
     }
+
+    data class LoadEffect(
+        val title: String,
+        val name: String,
+        val description: String,
+        val selectedCategoryPosition: Int,
+        val btnUploadText: String,
+        val btnSubmitText: String
+    )
+
 
     data class State(
         val toastMessage: String? = null,
@@ -88,11 +103,9 @@ class ManagementIdeeViewModel(val context: Context, private val userRepository: 
         data class LoadImageFromGallery(val file: File) : Action()
         object AddClicked : Action()
         data class SelectCategory(val position: Int) : Action()
+        data class LoadIdToEdit(val id: String? = null, val view: View) : Action()
     }
 
-    private var currentState: State = State()
-
-    // private var onStateChanged: ((State) -> Unit)? = null
 
     fun onAction(action: Action) {
         when (action) {
@@ -100,17 +113,20 @@ class ManagementIdeeViewModel(val context: Context, private val userRepository: 
 
 
                 imageFile = action.file
-                currentState.copy(
-                    toastMessage = "no Image selected"
+                stateLiveData.postValue(
+                    State(
+                        toastMessage = "no Image selected"
+                    )
                 )
             }
             is Action.SelectCategory -> {
                 try {
                     selectedCategoryCaching = categoriesArray[action.position]
-                    currentState.copy(categoryNotSelected = false)
                 } catch (d: Exception) {
-                    currentState.copy(
-                        toastMessage = "Please select a category"
+                    stateLiveData.postValue(
+                        State(
+                            toastMessage = "Please select a category"
+                        )
                     )
                 }
 
@@ -154,24 +170,64 @@ class ManagementIdeeViewModel(val context: Context, private val userRepository: 
                         )
                         runBlocking {
                             userRepository.createNewIdea(createIdeeReq, imageFile).collect {
-                                Log.e("idea", it.data.toString() ?: " nothing")
-                                stateLiveData.postValue(State(
-                                    toastMessage = "Idea created",
-                                    navigateToOtherScreen = true,
-                                    idOfIdea = it.data!!.id
-                                ))
+                                Log.e("idea", it.data.toString())
+                                stateLiveData.postValue(
+                                    State(
+                                        toastMessage = "Idea created",
+                                        navigateToOtherScreen = true,
+                                        idOfIdea = it.data!!.id
+                                    )
+                                )
                             }
                         }
                     }
                 }
+            is Action.LoadIdToEdit -> {
 
+                runBlocking {
+                    if (action.id != null) userRepository.getIdeaWithId(action.id).collect {
+                        val idea = it.data
+                        if (idea is IdeaCaching) {
+                            loadEffectLiveData.postValue(
+                                LoadEffect(
+                                    title = action.view.context.getString(R.string.title_edit_idea),
+                                    name = idea.title,
+                                    description = idea.description,
+                                    selectedCategoryPosition = categoriesArray.indexOf(
+                                        categoriesArray.first { it.id == idea.categoryId }),
+                                    btnUploadText = action.view.context.getString(R.string.edit),
+                                    btnSubmitText = action.view.context.getString(R.string.edit)
+                                )
+                            )
+                        } else if (idea is Idea) {
+                            loadEffectLiveData.postValue(
+                                LoadEffect(
+                                    title = action.view.context.getString(R.string.title_edit_idea),
+                                    name = idea.title,
+                                    description = idea.description,
+                                    selectedCategoryPosition = categoriesArray.indexOf(idea.category),
+                                    btnUploadText = action.view.context.getString(R.string.upload),
+                                    btnSubmitText = action.view.context.getString(R.string.edit)
+                                )
+                            )
+
+                        }
+
+                    }
+                    else loadEffectLiveData.postValue(
+                        LoadEffect(
+                            title = action.view.context.getString(R.string.name),
+                            name = action.view.context.getString(R.string.name),
+                            description = action.view.context.getString(R.string.name),
+                            selectedCategoryPosition = 0,
+                            btnUploadText = action.view.context.getString(R.string.upload),
+                            btnSubmitText = action.view.context.getString(R.string.submit)
+                        )
+                    )
+                }
+            }
         }
-        //onStateChanged?.invoke(currentState)
     }
 
-    fun subscribeToStateChanges(onStateChanged: (State) -> Unit) {
-        onStateChanged.invoke(currentState)
-        //   this.onStateChanged = onStateChanged
-    }
 
 }

@@ -13,6 +13,7 @@ import com.killua.ideenplattform.data.network.HttpClient
 import com.killua.ideenplattform.data.repository.MainRepository
 import com.killua.ideenplattform.data.repository.MainRepositoryImpl
 import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
+import com.killua.ideenplattform.ui.details.DetailViewModel
 import com.killua.ideenplattform.ui.home.HomeViewModel
 import com.killua.ideenplattform.ui.newidee.ManagementIdeeViewModel
 import net.sqlcipher.database.SQLiteDatabase
@@ -60,9 +61,11 @@ val httpModule = module {
             authToken = Credentials.basic(it.email, it.password)
         }
         val client = OkHttpClient.Builder()
-        client.addInterceptor(AuthenticationInterceptor(authToken))
-            .addInterceptor(GanderInterceptor(context).showNotification(true).redactHeader("Authorization")
-                .redactHeader("Cookie").retainDataFor(GanderInterceptor.Period.ONE_WEEK))
+        client.authenticator(AuthenticationInterceptor(authToken))
+            .addInterceptor(
+                GanderInterceptor(context).showNotification(true).redactHeader("Authorization")
+                    .redactHeader("Cookie").retainDataFor(GanderInterceptor.Period.ONE_WEEK)
+            )
 
         client.connectTimeout(10, TimeUnit.SECONDS)
         client.writeTimeout(10, TimeUnit.SECONDS)
@@ -85,6 +88,7 @@ val apiModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
+
     }
     single {
         val baseUrl = androidContext().getString(R.string.api_url)
@@ -113,8 +117,6 @@ val repoModule = module {
         )
     }
     single { providerMainRepository(get(), get(), get(), get(), androidContext()) }
-
-
 }
 
 val moduleBuilder = module {
@@ -122,9 +124,9 @@ val moduleBuilder = module {
     single {
         SharedPreferencesHandler(androidContext())
     }
-    single { HomeViewModel(androidContext()) }
+    single { HomeViewModel(get()) }
     single { ManagementIdeeViewModel(androidContext(), get()) }
-
+    single { DetailViewModel(get()) }
 
 }
 

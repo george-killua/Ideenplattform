@@ -5,9 +5,11 @@
     <data>
 
         <import type="android.view.View" />
-<variable
-    name="user"
-    type="com.killua.ideenplattform.data.models.local.UserCaching" />
+
+        <variable
+            name="user"
+            type="com.killua.ideenplattform.data.models.local.UserCaching" />
+
         <variable
             name="comment"
             type="com.killua.ideenplattform.data.models.api.IdeaComment" />
@@ -43,6 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/comment_profile_image"
             app:layout_constraintTop_toBottomOf="@id/tv_full_name" />
+
         <TextView
             android:id="@+id/tv_full_name"
             android:layout_width="wrap_content"

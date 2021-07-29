@@ -9,7 +9,7 @@ import com.killua.ideenplattform.data.models.local.IdeaCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
 
 @Database(
-    entities = [UserCaching::class, IdeaCaching::class, CategoryCaching::class], version = 2,
+    entities = [UserCaching::class, IdeaCaching::class, CategoryCaching::class], version = 1,
     exportSchema = false
 )
 @TypeConverters(IdeaRatingArrayConverter::class)

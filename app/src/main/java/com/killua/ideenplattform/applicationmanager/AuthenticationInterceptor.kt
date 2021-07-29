@@ -1,18 +1,18 @@
 package com.killua.ideenplattform.applicationmanager
 
-import okhttp3.Interceptor
-import okhttp3.Response
+import okhttp3.*
 
 
-class AuthenticationInterceptor(private val token: String) : Interceptor {
-    //ist kein Token, base64 encode
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val builder = original.newBuilder()
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", token)
-        val request = builder.build()
-        return chain.proceed(request)
+class AuthenticationInterceptor(private val token: String) : Authenticator {
+
+
+    override fun authenticate(route: Route?, response: Response): Request? {
+        if (response.request.header("Authorization") != null) {
+            return null; // Give up, we've already attempted to authenticate.
+        }
+
+        return response.request.newBuilder()
+            .header("Authorization", token)
+            .build();
     }
 }

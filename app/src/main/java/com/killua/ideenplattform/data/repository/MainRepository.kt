@@ -11,7 +11,7 @@ import java.io.File
 interface MainRepository {
     suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>>
     suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>>
-    suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
+    suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Boolean>>
     suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
     suspend fun getMe(): Flow<RepoResultResult<UserCaching?>>
     suspend fun getUserId(id: String): Flow<RepoResultResult<UserCaching>>
@@ -29,7 +29,7 @@ interface MainRepository {
         file: File?
     ): Flow<RepoResultResult<Idea?>>
 
-    suspend fun getAllIdeas(): Flow<RepoResultResult<ArrayList<Any>>>
+    suspend fun getAllIdeas(): Flow<RepoResultResult<List<Idea>>>
     suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>>
     suspend fun updateIdeaWithId(
         ideaId: String,
@@ -41,7 +41,7 @@ interface MainRepository {
     suspend fun releaseIdea(
         ideaId: String,
         releaseReq: IdeaReleaseReq
-    ): Flow<RepoResultResult<Nothing>>
+    ): Flow<RepoResultResult<Boolean>>
 
     suspend fun createComment(
         ideaId: String,

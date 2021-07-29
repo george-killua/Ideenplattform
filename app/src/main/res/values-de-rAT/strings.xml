@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ideenplattform</string>
-    <string name="hochladen">HOCHLADEN</string>
+    <string name="upload">HOCHLADEN</string>
     <string name="title_home_idea">Ideen</string>
     <string name="title_top_ranked_ideas">Top Ranked</string>
     <string name="title_profile">Profil</string>
@@ -30,4 +30,5 @@
     <string name="register">regitrieren</string>
     <string name="login">anmeldung</string>
     <string name="add_idea_image_details">idee hinzufügen</string>
+    <string name="edit">Edit</string>
 </resources>

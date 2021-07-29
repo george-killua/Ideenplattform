@@ -20,13 +20,13 @@ class MyApplication : Application() {
             modules(databaseModule, httpModule, apiModule, repoModule,moduleBuilder)
         }
         instance = this
-        Gander.setGanderStorage(GanderPersistence.getInstance(this));
+        Gander.setGanderStorage(GanderPersistence.getInstance(this))
 
 
     }
     fun isOnline():Boolean{
-        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-       return cm.isActiveNetworkMetered
+        val command = "ping -c 1 google.com"
+        return Runtime.getRuntime().exec(command).waitFor() == 0
     }
 
     companion object {

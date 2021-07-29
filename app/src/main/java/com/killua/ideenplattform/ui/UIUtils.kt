@@ -1,9 +1,7 @@
 package com.killua.ideenplattform.ui
 
 import android.util.Log
-import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.PopupMenu
 import androidx.databinding.BindingAdapter
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
@@ -20,7 +18,7 @@ object PicassoFactory : KoinComponent {
         val client: OkHttpClient by inject()
         val picasso = Picasso.Builder(MyApplication.instance).downloader(OkHttp3Downloader(client))
         picasso.indicatorsEnabled(true)
-        Picasso.setSingletonInstance(picasso.build())
+if(Picasso.get()==null) Picasso.setSingletonInstance(picasso.build())
         return picasso.build()
     }
 }
@@ -32,11 +30,13 @@ object DataBindingAdapters {
         if (imageUri.isNullOrBlank()) {
             view.setImageURI(null)
         } else {
-            PicassoFactory.build().load(imageUri).fit().placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
+            PicassoFactory.build().load(imageUri).fit().placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         Log.d("PICASSO", "It should have loaded...")
                     }
+
                     override fun onError(e: Exception) {
                         Log.e("PICASSO", e.toString())
                     }
