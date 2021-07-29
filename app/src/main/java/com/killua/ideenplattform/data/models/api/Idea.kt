@@ -1,7 +1,13 @@
 package com.killua.ideenplattform.data.models.api
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.killua.ideenplattform.data.models.local.CategoryCaching
 import com.killua.ideenplattform.data.models.local.UserCaching
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 
 data class Idea(
     val id: String = "",
@@ -17,9 +23,9 @@ data class Idea(
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
     val lastUpdated: String = "",
     //($yyyy-MM-dd'T'HH:mm:ss.SSSZ)
-    val ratings: List<IdeaRating> = listOf(),
+    val comments: List<IdeaComment> = listOf(),
     val imageUrl: String = "",
-    val comments: List<IdeaComment> = listOf()
+    val ratings: List<IdeaRating> = listOf()
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
 ) {
     private val arrayRating: Int by lazy {
@@ -36,6 +42,18 @@ data class Idea(
     }
     val imageNull = imageUrl.isBlank()
 
+ fun date(){
+     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+     val parsed= LocalDate.parse(created,formatter)
+
+     val df1 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+     val str1: String = df1.format(parsed)
+     println(str1)
+     println(parsed)
+ }
+init {
+    date()
+}
 }
 
 

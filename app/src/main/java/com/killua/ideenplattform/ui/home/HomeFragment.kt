@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.killua.ideenplattform.databinding.FragmentHomeBinding
 import org.koin.android.ext.android.inject
 
@@ -38,9 +39,13 @@ class HomeFragment : Fragment() {
             binding.progressBar.visibility =
                 if (state.isLoadingProgressBar) View.VISIBLE else View.GONE
             state.toastMessage?.let { message -> showToast(message) }
-            if (state.navToNewIdea == true) toNewIdeaNavigation()
+            if (state.navToNewIdea) toNewIdeaNavigation()
+            if (state.navToDetail) toDetailNavigation(state.ideaIDNavigationHelper!!)
         })
-
+        val layoutRecyclerViewCustomized=LinearLayoutManager(context)
+        layoutRecyclerViewCustomized.orientation=LinearLayoutManager.HORIZONTAL
+        layoutRecyclerViewCustomized.reverseLayout = true
+//binding.textHome.layoutManager=layoutRecyclerViewCustomized
         binding.mv = viewModel
         binding.executePendingBindings()
 
@@ -55,7 +60,11 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
+    private fun toDetailNavigation(ideaId:String) {
+        val detailsToEdit: NavDirections =
+            HomeFragmentDirections.homeToDetail(ideaId)
+        this.findNavController().navigate(detailsToEdit)
+    }
     private fun toNewIdeaNavigation() {
         val detailsToEdit: NavDirections =
             HomeFragmentDirections.homeToAdd()

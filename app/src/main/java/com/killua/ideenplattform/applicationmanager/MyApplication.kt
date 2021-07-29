@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.ashokvarma.gander.Gander
 import com.ashokvarma.gander.persistence.GanderPersistence
+import com.jakewharton.threetenabp.AndroidThreeTen
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -21,6 +22,7 @@ class MyApplication : Application() {
         }
         instance = this
         Gander.setGanderStorage(GanderPersistence.getInstance(this))
+        AndroidThreeTen.init(this);
 
 
     }

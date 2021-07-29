@@ -66,8 +66,8 @@ interface ApiServices {
         @Part image: MultipartBody.Part? = null
     ): Response<Idea>
 
-    @GET("idea/")
-    suspend fun getIdeaWithId(@Query("ideaId") ideaId: String): Response<Idea>
+    @GET("idea/{id}")
+    suspend fun getIdeaWithId(@Path("id") ideaId: String): Response<Idea>
 
     @PUT("idea/")
     suspend fun updateIdeaWithId(

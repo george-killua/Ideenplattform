@@ -23,16 +23,11 @@ class SignupFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        signupViewModel =
-            ViewModelProvider(this).get(SignupViewModel::class.java)
 
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        signupViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
+
         return root
     }
 

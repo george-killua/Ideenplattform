@@ -31,4 +31,5 @@
     <string name="login">anmeldung</string>
     <string name="add_idea_image_details">idee hinzufügen</string>
     <string name="edit">Edit</string>
+    <string name="idea_image">idee Foto</string>
 </resources>

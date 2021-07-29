@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 class LoginViewModel(val context: Context, private val userRepository: MainRepository) :
     BaseObservable() {
 
-  val stateLiveData: MutableLiveData<LoginViewModel.State> = MutableLiveData<LoginViewModel.State>()
+  val stateLiveData: MutableLiveData<State> = MutableLiveData<State>()
 
     @get: Bindable
     var userName: String = ""

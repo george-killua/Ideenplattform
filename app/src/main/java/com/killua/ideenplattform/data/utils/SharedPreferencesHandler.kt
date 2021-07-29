@@ -24,7 +24,7 @@ class SharedPreferencesHandler(val context: Context) {
             )
         )
 
-    fun saveUserContent(user: SharedPrefsUser) = prefs.edit().putString(
+            fun saveUserContent(user: SharedPrefsUser) = prefs.edit().putString(
         context.getString(R.string.GJERPIGNJpsijpt34welkejngfsgfms), userToString(user)
     ).apply()
 

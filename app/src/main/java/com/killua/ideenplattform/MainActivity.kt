@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp()=findNavController(R.id.nav_host_fragment_activity_main).navigateUp()
+
+    // TODO: 29.07.21 don't need it anymore
     private fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

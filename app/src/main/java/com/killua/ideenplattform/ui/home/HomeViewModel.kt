@@ -4,13 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavDirections
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.killua.ideenplattform.data.repository.MainRepository
 import kotlinx.coroutines.flow.collect
@@ -42,10 +36,12 @@ class HomeViewModel(private val mainRepository: MainRepository) : BaseObservable
 
     data class State(
         val isLoadingProgressBar: Boolean = false,
-        val navToDetail: String? = null,
+        val navToDetail: Boolean = false,
         val showIsNotOnline: Boolean? = null,
         val toastMessage: String? = null,
-        val navToNewIdea:Boolean?=false
+        val navToNewIdea: Boolean = false,
+        val ideaIDNavigationHelper: String? = null
+
     )
 
     sealed class Action {
@@ -94,10 +90,12 @@ class HomeViewModel(private val mainRepository: MainRepository) : BaseObservable
                     stateLiveData.postValue(State(toastMessage = "this can't be done offline"))
                     return
                 }
+                stateLiveData.postValue(State(navToDetail = true,ideaIDNavigationHelper = action.ideaId))
+
 
             }
             Action.AddIdea -> {
-            stateLiveData.postValue(State(navToNewIdea = true))
+                stateLiveData.postValue(State(navToNewIdea = true))
 
             }
         }

@@ -11,7 +11,14 @@
             name="data"
             type="com.killua.ideenplattform.data.models.api.Idea" />
     </data>
-
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+  app:cardCornerRadius="@dimen/_15sdp"
+    android:background="@color/grey_2"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/idea_item_constraint"
         android:layout_width="match_parent"
@@ -141,4 +148,5 @@
             app:constraint_referenced_ids="image_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
 </layout>

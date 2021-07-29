@@ -94,7 +94,12 @@ class MainRepositoryImpl(
                             networkErrorMessage = "User add Successfully"
                         )
                     )
-                    sharedPrefsHandler.saveUserContent(SharedPrefsUser(email=userCreateReq.email,password = userCreateReq.password))
+                    sharedPrefsHandler.saveUserContent(
+                        SharedPrefsUser(
+                            email = userCreateReq.email,
+                            password = userCreateReq.password
+                        )
+                    )
                 }
                 is NetworkResult.Error -> {
                     emit(
@@ -295,8 +300,7 @@ class MainRepositoryImpl(
     }
 
     override suspend fun getAllIdeas() = flow {
-        val res = safeApiCall(api.getAllIdeas())
-        when (res) {
+        when (val res = safeApiCall(api.getAllIdeas())) {
 
             is NetworkResult.Success -> {
                 emit(RepoResultResult(res.data, true))
@@ -308,14 +312,15 @@ class MainRepositoryImpl(
                     }
                 }
             }
-                is NetworkResult.Error -> {
-                    val caching = ideaDao.getAllIdeas()?.map { IdeaCaching.transmitIdea(it,this@MainRepositoryImpl) }
-                    emit(RepoResultResult(caching, false, res.message))
+            is NetworkResult.Error -> {
+                val caching = ideaDao.getAllIdeas()
+                    ?.map { IdeaCaching.transmitIdea(it, this@MainRepositoryImpl) }
+                emit(RepoResultResult(caching, false, res.message))
 
 
-                }
             }
-        }.flowOn(Dispatchers.IO)
+        }
+    }.flowOn(Dispatchers.IO)
 
     private fun saveIdeasDbHandler(ideasArray: Array<Idea>) {
         ideasArray.groupBy { idea -> idea.category.id }.forEach { (_, list) ->
@@ -340,173 +345,92 @@ class MainRepositoryImpl(
 
 
     override suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>> = flow {
-    when (val res = safeApiCall(api.getIdeaWithId(ideaId))) {
+        when (val res = safeApiCall(api.getIdeaWithId(ideaId))) {
 
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(res.data, true))
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(res.data, true))
+            }
+            is NetworkResult.Error -> {
+                val caching = ideaDao.getIdeaWithId(ideaId)
+                emit(RepoResultResult(caching, false, res.message))
+
+
+            }
         }
-        is NetworkResult.Error -> {
-            val caching = ideaDao.getIdeaWithId(ideaId)
-            emit(RepoResultResult(caching, false, res.message))
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun updateIdeaWithId(
+        ideaId: String,
+        createIdeeReq: CreateIdeeReq
+    ): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.updateIdeaWithId(ideaId, createIdeeReq))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(null, true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(null, false, res.message))
 
 
+            }
         }
-    }
-}.flowOn(Dispatchers.IO)
+        getAllIdeas()
+    }.flowOn(Dispatchers.IO)
 
-override suspend fun updateIdeaWithId(
-    ideaId: String,
-    createIdeeReq: CreateIdeeReq
-): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.updateIdeaWithId(ideaId, createIdeeReq))) {
+    override suspend fun deleteIdeaWithId(ideaId: String): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.deleteIdeaWithId(ideaId))) {
 
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(null, true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(null, false, res.message))
+
+
+            }
         }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
+        getAllIdeas()
+    }.flowOn(Dispatchers.IO)
 
+    override suspend fun searchIdeal(searchText: String) = flow {
+        when (val res = safeApiCall(api.searchIdeal(searchText))) {
 
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(res.data, true))
+            }
+            is NetworkResult.Error -> {
+                val caching = ideaDao.getCityBySearchText(searchText)
+                emit(RepoResultResult(caching, false, res.message))
+            }
         }
-    }
-    getAllIdeas()
-}.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
 
-override suspend fun deleteIdeaWithId(ideaId: String): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.deleteIdeaWithId(ideaId))) {
 
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
+    override suspend fun releaseIdea(
+        ideaId: String,
+        releaseReq: IdeaReleaseReq
+    ): Flow<RepoResultResult<Boolean>> = flow {
+        when (val res = safeApiCall(api.releaseIdea(ideaId, releaseReq))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(data = true, isNetworkingData = true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(
+                    data = false,
+                    isNetworkingData = false,
+                    networkErrorMessage = res.message
+                ))
+            }
         }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
+    }.flowOn(Dispatchers.IO)
 
 
-        }
-    }
-    getAllIdeas()
-}.flowOn(Dispatchers.IO)
-
-override suspend fun searchIdeal(searchText: String) = flow {
-    when (val res = safeApiCall(api.searchIdeal(searchText))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(res.data, true))
-        }
-        is NetworkResult.Error -> {
-            val caching = ideaDao.getCityBySearchText(searchText)
-            emit(RepoResultResult(caching, false, res.message))
-        }
-    }
-}.flowOn(Dispatchers.IO)
-
-
-override suspend fun releaseIdea(
-    ideaId: String,
-    releaseReq: IdeaReleaseReq
-): Flow<RepoResultResult<Boolean>> = flow {
-    when (val res = safeApiCall(api.releaseIdea(ideaId, releaseReq))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(true, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(false, false, res.message))
-        }
-    }
-}.flowOn(Dispatchers.IO)
-
-
-override suspend fun createComment(
-    ideaId: String,
-    createCommentReq: CreateCommentReq
-): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.createComment(ideaId, createCommentReq))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
-        }
-    }
-}.flowOn(Dispatchers.IO)
-
-override suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>> = flow {
-    when (val res = safeApiCall(api.getComments(ideaId))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(res.data, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
-
-
-        }
-    }
-}.flowOn(Dispatchers.IO)
-
-override suspend fun deleteComments(
-    ideaId: String,
-    commentId: String
-): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.deleteComments(ideaId, commentId))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
-
-
-        }
-    }
-    getComments(ideaId)
-}.flowOn(Dispatchers.IO)
-
-override suspend fun postRating(
-    ideaId: String,
-    postRating: PostRating
-): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.postRating(ideaId, postRating))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
-
-
-        }
-    }
-    getAllIdeas()
-}.flowOn(Dispatchers.IO)
-
-override suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Nothing>> = flow {
-    when (val res = safeApiCall(api.deleteRating(ideaId))) {
-
-        is NetworkResult.Success -> {
-            emit(RepoResultResult(null, true))
-        }
-        is NetworkResult.Error -> {
-            emit(RepoResultResult(null, false, res.message))
-
-
-        }
-    }
-    getAllIdeas()
-}.flowOn(Dispatchers.IO)
-
-override suspend fun uploadImageIdea(
-    ideaId: String,
-    path: String
-): Flow<RepoResultResult<Nothing>> {
-    val file = File(path)
-    val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-    val bodyImage: MultipartBody.Part =
-        MultipartBody.Part.createFormData("user_pic", file.name, reqFile)
-    return flow {
-        when (val res = safeApiCall(api.uploadImageIdea(ideaId, bodyImage))) {
+    override suspend fun createComment(
+        ideaId: String,
+        createCommentReq: CreateCommentReq
+    ): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.createComment(ideaId, createCommentReq))) {
 
             is NetworkResult.Success -> {
                 emit(RepoResultResult(null, true))
@@ -516,7 +440,93 @@ override suspend fun uploadImageIdea(
             }
         }
     }.flowOn(Dispatchers.IO)
-}
+
+    override suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>> =
+        flow {
+            when (val res = safeApiCall(api.getComments(ideaId))) {
+
+                is NetworkResult.Success -> {
+                    emit(RepoResultResult(res.data, true))
+                }
+                is NetworkResult.Error -> {
+                    emit(RepoResultResult(null, false, res.message))
+
+
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+
+    override suspend fun deleteComments(
+        ideaId: String,
+        commentId: String
+    ): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.deleteComments(ideaId, commentId))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(null, true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(null, false, res.message))
+
+
+            }
+        }
+        getComments(ideaId)
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun postRating(
+        ideaId: String,
+        postRating: PostRating
+    ): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.postRating(ideaId, postRating))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(null, true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(null, false, res.message))
+
+
+            }
+        }
+        getAllIdeas()
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Nothing>> = flow {
+        when (val res = safeApiCall(api.deleteRating(ideaId))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(null, true))
+            }
+            is NetworkResult.Error -> {
+                emit(RepoResultResult(null, false, res.message))
+
+
+            }
+        }
+        getAllIdeas()
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun uploadImageIdea(
+        ideaId: String,
+        path: String
+    ): Flow<RepoResultResult<Nothing>> {
+        val file = File(path)
+        val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val bodyImage: MultipartBody.Part =
+            MultipartBody.Part.createFormData("user_pic", file.name, reqFile)
+        return flow {
+            when (val res = safeApiCall(api.uploadImageIdea(ideaId, bodyImage))) {
+
+                is NetworkResult.Success -> {
+                    emit(RepoResultResult(null, true))
+                }
+                is NetworkResult.Error -> {
+                    emit(RepoResultResult(null, false, res.message))
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 
 }
 
