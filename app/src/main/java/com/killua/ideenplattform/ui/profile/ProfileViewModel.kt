@@ -31,71 +31,54 @@ sealed class ProfileEffect {
 }
 
 class ProfileViewModel(val repository: MainRepository) :
-    BaseViewModel<StateViewDataBinding, ProfileEffect, ProfileState>() {
+    BaseViewModel<StateViewDataBinding, ProfileEffect, ProfileState>(ProfileState()) {
 
-    init { //set default for the view state
-        state.postValue(ProfileState())
-        val currentViewState = getState()
-        val newViewState = currentViewState?.copy(isLoading = true)
-        state.postValue(newViewState)
+    init {
+        reducer {
+            copy(isLoading = true)
+        }
         launchCoroutine {
+
             repository.getMe().collect {
-                when (val userCaching = it.data) {
-                    null -> {
-                        state.postValue(ProfileState())
-
-
-                    }
-                    else -> {
-                        stateDataBinding.postValue(StateViewDataBinding(
-                            imageProfileUrl = userCaching.profilePicture,
-                            fullName = userCaching.fullName,
-                            email = userCaching.email,
-                            firstname = userCaching.firstname,
-                            lastname = userCaching.lastname,
-                            rol = if (userCaching.isManager) "Ideas Manager" else "User"))
-                    }
+                val userCaching = it.data
+                if (userCaching != null) {
+                    postStateDataBinding(StateViewDataBinding(
+                        imageProfileUrl = userCaching.profilePicture,
+                        fullName = userCaching.fullName,
+                        email = userCaching.email,
+                        firstname = userCaching.firstname,
+                        lastname = userCaching.lastname,
+                        rol = if (userCaching.isManager) "Ideas Manager" else "User"))
                 }
-
+                reducer {
+                    copy(isLoading = false)
+                }
             }
-            val myViewState = currentViewState?.copy(isLoading = false)
-            state.postValue(myViewState)
+
+
+        }
+    }
+
+        fun setIntent(intent: ProfileAction) {
+            when (intent) {
+
+                ProfileAction.OnAddNewIdeaAction -> navigateToAddIdea()
+                ProfileAction.OnEditProfileAction -> navigateToEditProfile()
+                ProfileAction.OnSignOutAction -> navigateToLoginFragment()
+            }
+        }
+
+        private fun navigateToLoginFragment() {
+            postEffect(ProfileEffect.NavigateToLoginFragment)
+        }
+
+        private fun navigateToAddIdea() {
+            postEffect(ProfileEffect.NavigateToAddIdea)
+        }
+
+        private fun navigateToEditProfile() {
+            postEffect(ProfileEffect.NavigateToEditProfile)
         }
 
 
     }
-
-
-    //User related actions will trigger this method
-    fun setIntent(intent: ProfileAction) {
-        when (intent) {
-
-            ProfileAction.OnAddNewIdeaAction -> navigateToAddIdea()
-            ProfileAction.OnEditProfileAction -> navigateToEditProfile()
-            ProfileAction.OnSignOutAction -> navigateToLoginFragment()
-        }
-    }
-
-    /*  private fun getWalletAmount() {
-          val currentViewState = getViewState()
-          launchRequest {
-              //  val walletAmount = walletService.getWalletAmount()
-              //   val newViewState = currentViewState?.copy(walletAmount = walletAmount)
-              // dataStates.postValue(DataState.Success(newViewState))
-          }
-      }
-  */
-    private fun navigateToLoginFragment() {
-        viewEffect.postValue(ProfileEffect.NavigateToLoginFragment)
-    }
-
-    private fun navigateToAddIdea() {
-        viewEffect.postValue(ProfileEffect.NavigateToAddIdea)
-    }
-
-    private fun navigateToEditProfile() {
-        viewEffect.postValue(ProfileEffect.NavigateToEditProfile)
-    }
-
-
-}

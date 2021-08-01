@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.databinding.FragmentProfileBinding
 import com.killua.ideenplattform.ui.safeNavigate
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -32,16 +33,22 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel.getViewEffects.observe(viewLifecycleOwner, Observer {
-            onViewEffectReceived(it)
-        })
+        lifecycleScope.launchWhenCreated {
+            viewModel.getViewEffects.collect {
+                onViewEffectReceived(it)
+            }
+        }
         //If you want you can decide to handle your view state changes by simply observing it
-        viewModel.getStateDataBinding.observe(viewLifecycleOwner, Observer {
-            onStateDataBinding(it)
-        })
-        viewModel.getState.observe(viewLifecycleOwner, Observer {
-            onState(it)
-        })
+        lifecycleScope.launchWhenCreated {
+            viewModel.getStateDataBinding.collect {
+                onStateDataBinding(it)
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.getState.collect {
+                onState(it)
+            }
+        }
     }
 
     private fun onViewEffectReceived(effect: ProfileEffect?) {
@@ -51,11 +58,11 @@ class ProfileFragment : Fragment() {
                 findNavController().safeNavigate(action)
             }
             ProfileEffect.NavigateToEditProfile -> {
-                val action =ProfileFragmentDirections.profileToEditProfile()
+                val action = ProfileFragmentDirections.profileToEditProfile()
                 findNavController().safeNavigate(action)
             }
             ProfileEffect.NavigateToLoginFragment -> {
-                val action =ProfileFragmentDirections.profileToLogin()
+                val action = ProfileFragmentDirections.profileToLogin()
                 findNavController().safeNavigate(action)
             }
         }
@@ -92,6 +99,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_menu, menu)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.pm_edit_profile -> viewModel.setIntent(ProfileAction.OnEditProfileAction)
