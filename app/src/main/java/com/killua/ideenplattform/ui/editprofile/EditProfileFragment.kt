@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.killua.ideenplattform.R
+import com.killua.ideenplattform.databinding.FragmentEditProfileBinding
+import com.killua.ideenplattform.databinding.FragmentProfileBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +28,8 @@ class EditProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-
+val binding =FragmentEditProfileBinding.inflate(inflater,container,false)
+        binding.etFirstName.error
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }

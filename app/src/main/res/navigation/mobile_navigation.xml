@@ -72,8 +72,14 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_navigation_profile_to_editProfileFragment"
+            android:id="@+id/profile_to_edit_profile"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/profile_to_login"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/profile_to_new_idea"
+            app:destination="@id/management_idea_fragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_top_ranked"

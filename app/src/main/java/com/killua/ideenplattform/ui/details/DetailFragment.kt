@@ -69,9 +69,7 @@ class DetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-
-        return false
-    }
+        return false    }
 }
 
 

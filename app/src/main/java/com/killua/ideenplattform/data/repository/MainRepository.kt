@@ -12,15 +12,15 @@ interface MainRepository {
     suspend fun login(email: String, password: String): Flow<RepoResultResult<Boolean>>
     suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>>
     suspend fun createUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Boolean>>
-    suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Nothing>>
+    suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Boolean>>
     suspend fun getMe(): Flow<RepoResultResult<UserCaching?>>
     suspend fun getUserId(id: String): Flow<RepoResultResult<UserCaching>>
-    suspend fun uploadUserImage(path: String): Flow<RepoResultResult<Nothing>>
-    suspend fun deleteImageOfUser(): Flow<RepoResultResult<Nothing>>
+    suspend fun uploadUserImage(path: String): Flow<RepoResultResult<Boolean>>
+    suspend fun deleteImageOfUser(): Flow<RepoResultResult<Boolean>>
     suspend fun updateMangerStatus(
         userId: String,
         updateManagerStatus: UpdateManagerStatus
-    ): Flow<RepoResultResult<Nothing>>
+    ): Flow<RepoResultResult<Boolean>>
     fun postscher()
     suspend fun getAllCategories(): Flow<RepoResultResult<ArrayList<CategoryCaching>>>
     suspend fun getCategoryWithId(id: String): Flow<RepoResultResult<CategoryCaching>>
@@ -34,9 +34,9 @@ interface MainRepository {
     suspend fun updateIdeaWithId(
         ideaId: String,
         createIdeeReq: CreateIdeeReq
-    ): Flow<RepoResultResult<Nothing>>
+    ): Flow<RepoResultResult<Boolean>>
 
-    suspend fun deleteIdeaWithId(ideaId: String): Flow<RepoResultResult<Nothing>>
+    suspend fun deleteIdeaWithId(ideaId: String): Flow<RepoResultResult<Boolean>>
     suspend fun searchIdeal(searchText: String): Flow<RepoResultResult<List<Any>>>
     suspend fun releaseIdea(
         ideaId: String,
@@ -49,8 +49,8 @@ interface MainRepository {
     ): Flow<RepoResultResult<Boolean>>
 
     suspend fun getComments(ideaId: String): Flow<RepoResultResult<List<IdeaComment>>>
-    suspend fun deleteComments(ideaId: String, commentId: String): Flow<RepoResultResult<Nothing>>
-    suspend fun postRating(ideaId: String, postRating: PostRating): Flow<RepoResultResult<Nothing>>
-    suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Nothing>>
-    suspend fun uploadImageIdea(ideaId: String, path: String): Flow<RepoResultResult<Nothing>>
+    suspend fun deleteComments(ideaId: String, commentId: String): Flow<RepoResultResult<Boolean>>
+    suspend fun postRating(ideaId: String, postRating: PostRating): Flow<RepoResultResult<Boolean>>
+    suspend fun deleteRating(ideaId: String): Flow<RepoResultResult<Boolean>>
+    suspend fun uploadImageIdea(ideaId: String, path: String): Flow<RepoResultResult<Boolean>>
 }

@@ -1,6 +1,7 @@
 package com.killua.ideenplattform.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,10 @@ class HomeFragment : Fragment() {
                 if (state.isLoadingProgressBar) View.VISIBLE else View.GONE
             state.toastMessage?.let { message -> showToast(message) }
             if (state.navToNewIdea) toNewIdeaNavigation()
-            if (state.navToDetail) toDetailNavigation(state.ideaIDNavigationHelper!!)
+            if (state.navToDetail) {
+                Log.e("errorNav","i'm here ")
+                toDetailNavigation(state.ideaIDNavigationHelper!!)
+            }
         })
         val layoutRecyclerViewCustomized=LinearLayoutManager(context)
         layoutRecyclerViewCustomized.orientation=LinearLayoutManager.HORIZONTAL

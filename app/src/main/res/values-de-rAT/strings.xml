@@ -11,9 +11,11 @@
     <string name="title_new_idea">Idee hinzufügen</string>
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
-    <string name="role">"Rolle : "</string>
+    <string name="profile_role">"Rolle : "</string>
     <string name="last_name">Nachname</string>
     <string name="first_name">Vorname</string>
+    <string name="profile_firstname">Vorname : </string>
+    <string name="profile_lastname">Nachname : </string>
     <string name="sign_out">abmelden</string>
     <string name="edit_profile">Profil bearbeiten</string>
     <string name="abort">abbrechen</string>
@@ -33,4 +35,5 @@
     <string name="edit">Edit</string>
     <string name="idea_image">idee Foto</string>
     <string name="add_comment">Kommentar hinzufügen</string>
+    <string name="save_changes">änderung speichern</string>
 </resources>

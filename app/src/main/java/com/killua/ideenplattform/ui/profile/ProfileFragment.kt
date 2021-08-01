@@ -1,21 +1,19 @@
 package com.killua.ideenplattform.ui.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.killua.ideenplattform.MainActivity
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.databinding.FragmentProfileBinding
+import com.killua.ideenplattform.ui.safeNavigate
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private val viewModel by viewModel<ProfileViewModel>()
     private var _binding: FragmentProfileBinding? = null
 
     // This property is only valid between onCreateView and
@@ -25,27 +23,65 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textNotifications
-        profileViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).supportActionBar?.title = requireContext().getString(
-            R.string.title_profile
-        )
         setHasOptionsMenu(true)
+        viewModel.getViewEffects.observe(viewLifecycleOwner, Observer {
+            onViewEffectReceived(it)
+        })
+        //If you want you can decide to handle your view state changes by simply observing it
+        viewModel.getStateDataBinding.observe(viewLifecycleOwner, Observer {
+            onStateDataBinding(it)
+        })
+        viewModel.getState.observe(viewLifecycleOwner, Observer {
+            onState(it)
+        })
+    }
+
+    private fun onViewEffectReceived(effect: ProfileEffect?) {
+        when (effect) {
+            ProfileEffect.NavigateToAddIdea -> {
+                val action = ProfileFragmentDirections.profileToNewIdea()
+                findNavController().safeNavigate(action)
+            }
+            ProfileEffect.NavigateToEditProfile -> {
+                val action =ProfileFragmentDirections.profileToEditProfile()
+                findNavController().safeNavigate(action)
+            }
+            ProfileEffect.NavigateToLoginFragment -> {
+                val action =ProfileFragmentDirections.profileToLogin()
+                findNavController().safeNavigate(action)
+            }
+        }
+    }
+
+    private fun onStateDataBinding(stateViewDb: StateViewDataBinding?) {
+        binding.state = stateViewDb
+        binding.executePendingBindings()
+    }
+
+    private fun onState(state: ProfileState?) {
+
+        when {
+            state == null -> {
+                return
+            }
+            state.toastMessage != null -> showToast(state.toastMessage)
+            state.isLoading != null -> {
+                binding.progressBar.visibility =
+                    if (state.isLoading) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
@@ -53,12 +89,15 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.profile_menu, menu)
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (android.R.id.home == item.itemId) {
-            this.findNavController().popBackStack()
-            return true
+        when (item.itemId) {
+            R.id.pm_edit_profile -> viewModel.setIntent(ProfileAction.OnEditProfileAction)
+            R.id.pm_new_idea -> viewModel.setIntent(ProfileAction.OnAddNewIdeaAction)
+            R.id.pm_sign_out -> viewModel.setIntent(ProfileAction.OnSignOutAction)
         }
-
-        return false
+        return super.onOptionsItemSelected(item)
     }
 }

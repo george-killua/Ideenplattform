@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.squareup.picasso.Callback
@@ -20,15 +22,31 @@ object PicassoFactory : KoinComponent {
         val client: OkHttpClient by inject()
         val picasso = Picasso.Builder(MyApplication.instance).downloader(OkHttp3Downloader(client))
         picasso.indicatorsEnabled(true)
-if(Picasso.get()==null) Picasso.setSingletonInstance(picasso.build())
+        if (Picasso.get() == null) Picasso.setSingletonInstance(picasso.build())
         return picasso.build()
     }
 }
+
 fun NavController.safeNavigate(direction: NavDirections) {
     currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
 
 }
+
 object DataBindingAdapters {
+
+
+    @BindingAdapter("errorSetter")
+    @JvmStatic
+    fun setEtError(textInputLayout: TextInputLayout, errorMessage: String?) {
+        if (errorMessage.isNullOrBlank()) {
+            textInputLayout.isErrorEnabled = false
+        } else {
+            textInputLayout.isErrorEnabled = true
+            textInputLayout.error = errorMessage
+
+        }
+    }
+
     @BindingAdapter("imageUrl")
     @JvmStatic
     fun setImageUri(view: ImageView, imageUri: String?) {

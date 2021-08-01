@@ -16,11 +16,11 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ditails_fragment.xml" value="0.14447463768115942" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.2517861615071868" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.295835921002024" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.17137096774193547" />
         <entry key="app/src/main/res/layout/fragment_new_idee.xml" value="0.17932489451476794" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_top_rank.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.23325635103926096" />
@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/rv_idee_item.xml" value="0.3447387362312739" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.27794871794871795" />
         <entry key="app/src/main/res/menu/comment_menu.xml" value="0.12543859649122807" />
+        <entry key="app/src/main/res/menu/profile_menu.xml" value="0.313278918280162" />
         <entry key="app/src/main/res/xml/filepaths.xml" value="0.12543859649122807" />
       </map>
     </option>
