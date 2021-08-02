@@ -13,11 +13,13 @@
         <entry key="app/src/main/res/drawable/ic_information.xml" value="0.2513157894736842" />
         <entry key="app/src/main/res/drawable/ic_like.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/drawable/placeholder.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout-v28/fragment_edit_profile.xml" value="0.6744791666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ditails_fragment.xml" value="0.14447463768115942" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.2517861615071868" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.295835921002024" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_idea_management.xml" value="0.11359649122807018" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.17137096774193547" />
         <entry key="app/src/main/res/layout/fragment_new_idee.xml" value="0.17932489451476794" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />

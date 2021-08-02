@@ -1,11 +1,15 @@
 package com.killua.ideenplattform.ui
 
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
@@ -34,18 +38,22 @@ fun NavController.safeNavigate(direction: NavDirections) {
 
 object DataBindingAdapters {
 
-
-    @BindingAdapter("errorSetter")
+    @BindingAdapter("setCustomAdapter")
     @JvmStatic
-    fun setEtError(textInputLayout: TextInputLayout, errorMessage: String?) {
-        if (errorMessage.isNullOrBlank()) {
-            textInputLayout.isErrorEnabled = false
-        } else {
-            textInputLayout.isErrorEnabled = true
-            textInputLayout.error = errorMessage
+    fun setCustomAdapter(view: AppCompatSpinner, currentArray: List<String>){
+        if(currentArray.isNotEmpty()){
+            val arraList= arrayListOf(view.context.getString(R.string.select_category))
+            arraList.addAll(currentArray)
+            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                view.context,
+                android.R.layout.simple_spinner_item,
+                arraList)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
+            view.adapter = adapter
         }
     }
+
 
     @BindingAdapter("imageUrl")
     @JvmStatic
@@ -53,8 +61,8 @@ object DataBindingAdapters {
         if (imageUri.isNullOrBlank()) {
             view.setImageURI(null)
         } else {
-            PicassoFactory.build().load(imageUri).fit().placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
+            PicassoFactory.build().load(imageUri).fit().placeholder(com.killua.ideenplattform.R.drawable.placeholder)
+                .error(com.killua.ideenplattform.R.drawable.placeholder)
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         Log.d("PICASSO", "It should have loaded...")

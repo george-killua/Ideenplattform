@@ -15,7 +15,7 @@ interface MainRepository {
     suspend fun updateUser(userCreateReq: UserCreateReq): Flow<RepoResultResult<Boolean>>
     suspend fun getMe(): Flow<RepoResultResult<UserCaching?>>
     suspend fun getUserId(id: String): Flow<RepoResultResult<UserCaching>>
-    suspend fun uploadUserImage(path: String): Flow<RepoResultResult<Boolean>>
+    suspend fun uploadUserImage(file: File): Flow<RepoResultResult<Boolean>>
     suspend fun deleteImageOfUser(): Flow<RepoResultResult<Boolean>>
     suspend fun updateMangerStatus(
         userId: String,

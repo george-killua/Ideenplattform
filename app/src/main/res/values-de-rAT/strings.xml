@@ -36,4 +36,8 @@
     <string name="idea_image">idee Foto</string>
     <string name="add_comment">Kommentar hinzufügen</string>
     <string name="save_changes">änderung speichern</string>
+    <string name="internet_error">Kein Internet</string>
+    <string name="description_error">Beschreibung ist Leer</string>
+    <string name="idea_name_error">Idee Name Leer</string>
+    <string name="password_confirm">Passwortbestätigung</string>
 </resources>

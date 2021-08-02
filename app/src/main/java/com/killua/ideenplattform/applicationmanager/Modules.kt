@@ -14,9 +14,9 @@ import com.killua.ideenplattform.data.repository.MainRepository
 import com.killua.ideenplattform.data.repository.MainRepositoryImpl
 import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
 import com.killua.ideenplattform.ui.details.DetailViewModel
+import com.killua.ideenplattform.ui.editprofile.EditProfileViewModel
 import com.killua.ideenplattform.ui.home.HomeViewModel
 import com.killua.ideenplattform.ui.newidee.ManagementIdeeViewModel
-import com.killua.ideenplattform.ui.profile.ProfileFragment
 import com.killua.ideenplattform.ui.profile.ProfileViewModel
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
@@ -137,9 +137,10 @@ val moduleBuilder by lazy {
             SharedPreferencesHandler(androidContext())
         }
         single { HomeViewModel(get()) }
-        single { ManagementIdeeViewModel(androidContext(), get()) }
+        viewModel { ManagementIdeeViewModel( get()) }
         single { DetailViewModel(get()) }
         viewModel { ProfileViewModel(get()) }
+        viewModel { EditProfileViewModel(get()) }
 
     }
 }

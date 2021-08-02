@@ -42,4 +42,8 @@
         <item>Really bad</item>
     </string-array>
     <string name="save_changes">save changes</string>
+    <string name="internet_error">No Internet connection</string>
+    <string name="description_error">description Is Empty</string>
+    <string name="idea_name_error">Idea Title Missing</string>
+    <string name="password_confirm">password confirm</string>
 </resources>

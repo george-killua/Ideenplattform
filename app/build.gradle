@@ -32,6 +32,8 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
+        kotlinOptions.freeCompilerArgs += ['-Xuse-experimental=kotlinx.serialization.ImplicitReflectionSerializer,kotlinx.coroutines.ObsoleteCoroutinesApi']
+
     }
     buildFeatures {
         dataBinding true

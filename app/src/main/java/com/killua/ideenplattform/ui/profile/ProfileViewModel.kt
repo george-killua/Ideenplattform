@@ -12,11 +12,11 @@ sealed class ProfileAction {
 
 data class StateViewDataBinding(
     val imageProfileUrl: String? = null,
-    val fullName: String,
-    val email: String,
-    val firstname: String,
-    val lastname: String,
-    val rol: String,
+    val fullName: String = "",
+    val email: String = "",
+    val firstname: String = "",
+    val lastname: String = "",
+    val rol: String = "",
 )
 
 data class ProfileState(
@@ -31,7 +31,8 @@ sealed class ProfileEffect {
 }
 
 class ProfileViewModel(val repository: MainRepository) :
-    BaseViewModel<StateViewDataBinding, ProfileEffect, ProfileState>(ProfileState()) {
+    BaseViewModel<StateViewDataBinding, ProfileEffect, ProfileState>(ProfileState(),
+        StateViewDataBinding()) {
 
     init {
         reducer {
@@ -42,13 +43,15 @@ class ProfileViewModel(val repository: MainRepository) :
             repository.getMe().collect {
                 val userCaching = it.data
                 if (userCaching != null) {
-                    postStateDataBinding(StateViewDataBinding(
-                        imageProfileUrl = userCaching.profilePicture,
-                        fullName = userCaching.fullName,
-                        email = userCaching.email,
-                        firstname = userCaching.firstname,
-                        lastname = userCaching.lastname,
-                        rol = if (userCaching.isManager) "Ideas Manager" else "User"))
+                    reducerDB {
+                        copy(
+                            imageProfileUrl = userCaching.profilePicture,
+                            fullName = userCaching.fullName,
+                            email = userCaching.email,
+                            firstname = userCaching.firstname,
+                            lastname = userCaching.lastname,
+                            rol = if (userCaching.isManager) "Ideas Manager" else "User")
+                    }
                 }
                 reducer {
                     copy(isLoading = false)
@@ -59,26 +62,26 @@ class ProfileViewModel(val repository: MainRepository) :
         }
     }
 
-        fun setIntent(intent: ProfileAction) {
-            when (intent) {
+    fun setIntent(intent: ProfileAction) {
+        when (intent) {
 
-                ProfileAction.OnAddNewIdeaAction -> navigateToAddIdea()
-                ProfileAction.OnEditProfileAction -> navigateToEditProfile()
-                ProfileAction.OnSignOutAction -> navigateToLoginFragment()
-            }
+            ProfileAction.OnAddNewIdeaAction -> navigateToAddIdea()
+            ProfileAction.OnEditProfileAction -> navigateToEditProfile()
+            ProfileAction.OnSignOutAction -> navigateToLoginFragment()
         }
-
-        private fun navigateToLoginFragment() {
-            postEffect(ProfileEffect.NavigateToLoginFragment)
-        }
-
-        private fun navigateToAddIdea() {
-            postEffect(ProfileEffect.NavigateToAddIdea)
-        }
-
-        private fun navigateToEditProfile() {
-            postEffect(ProfileEffect.NavigateToEditProfile)
-        }
-
-
     }
+
+    private fun navigateToLoginFragment() {
+        postEffect(ProfileEffect.NavigateToLoginFragment)
+    }
+
+    private fun navigateToAddIdea() {
+        postEffect(ProfileEffect.NavigateToAddIdea)
+    }
+
+    private fun navigateToEditProfile() {
+        postEffect(ProfileEffect.NavigateToEditProfile)
+    }
+
+
+}

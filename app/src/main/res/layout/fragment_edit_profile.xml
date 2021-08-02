@@ -7,7 +7,7 @@
 
         <variable
             name="editProfileVm"
-            type="com.killua.ideenplattform.ui.editprofile.EdidProfileViewModel" />
+            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.EditProfileStateDB" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,17 +28,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="84dp"
-            android:src="@drawable/ic_edit"
-            android:scaleType="centerCrop"
+            android:shadowRadius="@integer/material_motion_duration_long_2"
+            android:shadowColor="@color/black"
+            android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="@+id/iv_profile_image"
             app:layout_constraintEnd_toEndOf="@+id/iv_profile_image"
             app:layout_constraintStart_toEndOf="@+id/iv_profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile_image"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile_image" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_firstName"
@@ -47,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/top_margin_big"
             android:layout_marginEnd="16dp"
             android:hint="@string/username"
             android:padding="@dimen/dimen15dp"
@@ -96,9 +95,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:hint="@string/password"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
@@ -122,7 +119,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:hint="password confirm"
+            android:hint="@string/password_confirm"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
             android:textSize="16sp"
@@ -141,8 +138,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen20dp"
-            android:onClickListener="@{() -> editProfileVm.saveClick()}"
-
             android:padding="@dimen/dimen15dp"
             android:text="@string/save_changes"
             android:textColor="@color/black"
@@ -152,5 +147,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_passwordConfirm" />
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/contentLoadingProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_lastname"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -237,13 +237,16 @@ class MainRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun uploadUserImage(path: String): Flow<RepoResultResult<Boolean>> {
-        val file = File(path)
-        val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-        val bodyImage: MultipartBody.Part =
-            MultipartBody.Part.createFormData("user_pic", file.name, reqFile)
+    override suspend fun uploadUserImage(file: File): Flow<RepoResultResult<Boolean>> {
+
+        // image of idea request
+        val requestImage: RequestBody = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+
+        val image: MultipartBody.Part=
+            requestImage.let { MultipartBody.Part.createFormData("files[0]", file.name, it) }
+
         return flow {
-            when (val res = safeApiCall(api.uploadUserImage(bodyImage))) {
+            when (val res = safeApiCall(api.uploadUserImage(image))) {
 
                 is NetworkResult.Success -> emit(RepoResultResult(data = true,
                     isNetworkingData = true))
@@ -351,8 +354,6 @@ class MainRepositoryImpl(
             requestBody,
             image
         )
-
-
 
 
 
