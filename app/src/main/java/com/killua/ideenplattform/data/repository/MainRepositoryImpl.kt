@@ -18,7 +18,6 @@ import com.killua.ideenplattform.data.requests.*
 import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -64,57 +63,6 @@ class MainRepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun postscher() {
-        /*   runBlocking (Dispatchers.Unconfined){
-               getAllIdeas().collect {
-                   it.data!!.forEach {
-                       createComment(it.id,CreateCommentReq("          _____            _____          \n" +
-                               "         /\\    \\          /\\    \\         \n" +
-                               "        /::\\____\\        /::\\    \\        \n" +
-                               "       /:::/    /       /::::\\    \\       \n" +
-                               "      /:::/    /       /::::::\\    \\      \n" +
-                               "     /:::/    /       /:::/\\:::\\    \\     \n" +
-                               "    /:::/    /       /:::/  \\:::\\    \\    \n" +
-                               "   /:::/    /       /:::/    \\:::\\    \\   \n" +
-                               "  /:::/    /       /:::/    / \\:::\\    \\  \n" +
-                               " /:::/    /       /:::/    /   \\:::\\ ___\\ \n" +
-                               "/:::/____/       /:::/____/  ___\\:::|    |\n" +
-                               "\\:::\\    \\       \\:::\\    \\ /\\  /:::|____|\n" +
-                               " \\:::\\    \\       \\:::\\    /::\\ \\::/    / \n" +
-                               "  \\:::\\    \\       \\:::\\   \\:::\\ \\/____/  \n" +
-                               "   \\:::\\    \\       \\:::\\   \\:::\\____\\    \n" +
-                               "    \\:::\\    \\       \\:::\\  /:::/    /    \n" +
-                               "     \\:::\\    \\       \\:::\\/:::/    /     \n" +
-                               "      \\:::\\    \\       \\::::::/    /      \n" +
-                               "       \\:::\\____\\       \\::::/    /       \n" +
-                               "        \\::/    /        \\::/____/        \n" +
-                               "         \\/____/                          \n" +
-                               "                                    ")).collect{
-                           print("${it.data} ,${it.networkErrorMessage}")
-                       }
-                   }
-               }
-           }*/
-    }
-
-    fun postd() {
-        runBlocking(Dispatchers.Unconfined) {
-            getAllIdeas().collect {
-                it.data!!.forEach { idea ->
-                    val comment: List<IdeaComment> =
-                        idea.comments.filter { it.message == "nice work :)" }
-
-                    comment.forEach {
-                        deleteComments(idea.id, it.id).collect {
-                            print("${it.isNetworkingData}  ${it.networkErrorMessage}")
-                        }
-                    }
-
-
-                }
-            }
-        }
-    }
 
     override suspend fun getAllUsers(): Flow<RepoResultResult<ArrayList<UserCaching>>> =
         flow {
@@ -242,7 +190,7 @@ class MainRepositoryImpl(
         // image of idea request
         val requestImage: RequestBody = file.asRequestBody("image/jpg".toMediaTypeOrNull())
 
-        val image: MultipartBody.Part=
+        val image: MultipartBody.Part =
             requestImage.let { MultipartBody.Part.createFormData("files[0]", file.name, it) }
 
         return flow {
@@ -267,20 +215,20 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.deleteImageOfUser())) {
 
             is NetworkResult.Success -> emit(
-                    RepoResultResult(
-                        data = true,
-                        isNetworkingData = true,
-                        networkErrorMessage = "image deleted Successfully"
-                    )
+                RepoResultResult(
+                    data = true,
+                    isNetworkingData = true,
+                    networkErrorMessage = "image deleted Successfully"
                 )
+            )
 
             is NetworkResult.Error -> emit(
-                    RepoResultResult(
-                        data = false,
-                        isNetworkingData = false,
-                        networkErrorMessage = res.message
-                    )
+                RepoResultResult(
+                    data = false,
+                    isNetworkingData = false,
+                    networkErrorMessage = res.message
                 )
+            )
         }
     }.flowOn(Dispatchers.IO)
 
@@ -393,6 +341,26 @@ class MainRepositoryImpl(
                 emit(RepoResultResult(caching, false, res.message))
 
 
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getAllIdeas(categoryId: String) = flow {
+        when (val res = safeApiCall(api.getAllIdeas(categoryId))) {
+
+            is NetworkResult.Success -> {
+                emit(RepoResultResult(res.data, true))
+                withContext(Dispatchers.Default) {
+                    ideaDao.removeAll()
+                    res.data?.let {
+                        saveIdeasDbHandler(it.toTypedArray())
+                    }
+                }
+            }
+            is NetworkResult.Error -> {
+                val caching = ideaDao.getAllIdeas()
+                    ?.map { IdeaCaching.transmitIdea(it, this@MainRepositoryImpl) }
+                emit(RepoResultResult(caching, false, res.message))
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -625,7 +593,7 @@ data class RepoResultResult<out T>(
 
 sealed class NetworkResult<T>(
     val data: T? = null,
-    val message: String? = null
+    val message: String? = null,
 ) {
     class Success<T>(data: T?) : NetworkResult<T>(data)
     class Error<T>(message: String, data: T? = null) : NetworkResult<T>(data, message)
@@ -633,10 +601,10 @@ sealed class NetworkResult<T>(
     object ResponseHandler {
         fun <T> safeApiCall(apiCall: Response<T>): NetworkResult<T> {
             try {
-                if (apiCall.isSuccessful || apiCall.code()==204) {
+                if (apiCall.isSuccessful || apiCall.code() == 204) {
                     val body = apiCall.body()
 
-                        return Success(body)
+                    return Success(body)
 
 
                 }

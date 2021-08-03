@@ -1,6 +1,5 @@
 package com.killua.ideenplattform.ui.editprofile
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.databinding.BaseObservable
@@ -14,8 +13,10 @@ import kotlinx.coroutines.flow.collect
 import java.io.File
 import java.lang.ref.WeakReference
 
-class EditProfileViewModel(private val mainRepository: MainRepository,
-                            private val context: WeakReference<Context>) :
+class EditProfileViewModel(
+    private val mainRepository: MainRepository,
+    private val context: WeakReference<Context>,
+) :
     BaseViewModel<EditProfileStateDB, Effect, State>(State(), EditProfileStateDB()) {
     private var currentUser = UserCaching()
 
@@ -38,7 +39,7 @@ class EditProfileViewModel(private val mainRepository: MainRepository,
         val firstNameError: Boolean = false,
         var lastNameError: Boolean = false,
         var passwordError: Boolean = false,
-        var passwordConfirmError: Boolean = false,
+        var passwordConfirmError: Boolean = false
     )
 
     sealed class Action {
@@ -92,26 +93,33 @@ class EditProfileViewModel(private val mainRepository: MainRepository,
     private fun insertImage(pathUri: String) {
         reducerDB { copy(imageUri = pathUri) }
         launchCoroutine {
-            val uri=Uri.parse(pathUri)
-            mainRepository.uploadUserImage(File( uri.path?:"")).collect {
-                if (it.isNetworkingData) {
+            val uri = Uri.parse(pathUri)
+            mainRepository.uploadUserImage(File(uri.path ?: "")).collect { repoResult ->
+                if (repoResult.isNetworkingData) {
                     context.get()?.let {
                         postEffect(Effect.MakeToast(it.getString(R.string.updated)))
                     }
-                } else   context.get()?.let {
-                    postEffect(Effect.MakeToast(it.getString(R.string.internet_error)))
-                }
+                } else
+                    context.get()?.let {
+                        postEffect(Effect.MakeToast(it.getString(R.string.internet_error)))
+                    }
             }
         }
     }
 
     private fun removeImage() {
         launchCoroutine {
-            mainRepository.deleteImageOfUser().collect {
-                if (it.isNetworkingData)
-                    reducerDB { copy(imageUri = null) }
-                else postEffect(Effect.MakeToast(it.networkErrorMessage!!))
+            mainRepository.deleteImageOfUser().collect { repoResult ->
+                if (repoResult.isNetworkingData)
+                    context.get()?.let {
+                        postEffect(Effect.MakeToast(it.getString(R.string.deleted)))
+                    }
+                else    context.get()?.let {
+                    postEffect(Effect.MakeToast(it.getString(R.string.internet_error)))
+                }
             }
+
+            reducerDB { copy(imageUri = "") }
         }
     }
 

@@ -71,7 +71,7 @@ class ManagementIdeeViewModel(private val userRepository: MainRepository) :
                 var categoryId = ""
                 userRepository.getAllCategories().collect { repoResult ->
                     try {
-                        val categoryName: String = categoriesArray.get(selectedCategory)
+                        val categoryName: String = categoriesArray[selectedCategory]
 
                         categoryId =
                             repoResult.data?.first { it.name_de == categoryName || it.name_en == categoryName }?.id!!
@@ -98,7 +98,7 @@ class ManagementIdeeViewModel(private val userRepository: MainRepository) :
         }
     }
 
-    fun validator(): Boolean {
+    private fun validator(): Boolean {
         var valid = MyApplication.instance.isOnline()
         getStateDataBinding().run {
             if (ideaName.isBlank()) {
@@ -165,7 +165,5 @@ class ManagementIdeeViewModel(private val userRepository: MainRepository) :
         }
     }
 }
-/*}
 
- */
 

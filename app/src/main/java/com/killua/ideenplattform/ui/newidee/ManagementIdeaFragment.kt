@@ -10,12 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,20 +21,20 @@ import com.github.drjacky.imagepicker.ImagePicker
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.databinding.FragmentIdeaManagementBinding
 import com.killua.ideenplattform.ui.DataBindingAdapters.setCustomAdapter
+import com.killua.ideenplattform.ui.editprofile.BaseFragment
 import com.killua.ideenplattform.ui.safeNavigate
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 
-class ManagementIdeaFragment : Fragment() {
+class ManagementIdeaFragment : BaseFragment() {
     private val args: ManagementIdeaFragmentArgs by navArgs()
     private val viewModel by viewModel<ManagementIdeeViewModel>()
 
-    // FIXME: 02.08.21 datastate binding qith image
     private lateinit var binding: FragmentIdeaManagementBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    var imageFile: File? = null
+    private var imageFile: File? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -219,8 +217,5 @@ class ManagementIdeaFragment : Fragment() {
     }
 
 
-    private fun showToast(message: String?) {
-        if (message != null) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
 
 }

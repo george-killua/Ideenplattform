@@ -52,7 +52,7 @@ interface ApiServices {
     @GET("category/")
     suspend fun getCategoryWithId(@Query("categoryId") categoryId: String): Response<CategoryCaching>
 
-    @GET("idea/")
+    @GET("idea")
     suspend fun getAllIdeas(@Query("categoryId") categoryId: String): Response<ArrayList<Idea>>
 
     //ideas api req

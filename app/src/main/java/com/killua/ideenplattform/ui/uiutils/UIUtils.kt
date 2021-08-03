@@ -1,16 +1,18 @@
 package com.killua.ideenplattform.ui
 
 import android.net.Uri
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.applicationmanager.MyApplication
-import com.squareup.picasso.Callback
+import com.killua.ideenplattform.ui.home.CategoryAdapter
+import com.killua.ideenplattform.ui.home.IdeasAdapter
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
@@ -54,11 +56,11 @@ object DataBindingAdapters {
 
     @BindingAdapter("imagePath")
     @JvmStatic
-    fun ImageView.setImagePath( imageUri: String?) {
+    fun ImageView.setImagePath(imageUri: String?) {
         if (imageUri.isNullOrBlank()) {
             setImageURI(null)
         } else {
-            val uri=Uri.parse(imageUri)
+            val uri = Uri.parse(imageUri)
             PicassoFactory
                 .build()
                 .load(uri)
@@ -66,6 +68,26 @@ object DataBindingAdapters {
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(this)
+        }
+    }
+
+    @BindingAdapter("setupIdeaAdapter")
+    @JvmStatic
+    fun RecyclerView.setupIdeaAdapter(adapter: IdeasAdapter?) {
+        if (adapter != null) {
+        this.adapter=adapter
+            this.layoutManager=LinearLayoutManager(this.context)
+        }
+    }
+    @BindingAdapter("setupCategoriesAdapter")
+    @JvmStatic
+    fun RecyclerView.setupCategoriesAdapter(adapter: CategoryAdapter?) {
+        if (adapter != null) {
+        this.adapter=adapter
+            this.layoutManager= LinearLayoutManager(
+                this.context,
+                LinearLayoutManager.HORIZONTAL,
+                false);
         }
     }
 }

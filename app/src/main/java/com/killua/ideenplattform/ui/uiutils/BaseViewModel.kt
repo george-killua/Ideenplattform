@@ -24,12 +24,12 @@ open class BaseViewModel<SD, E, S>(instanceOfState: S,instanceOfStateDataBinding
     private val workedThread = newSingleThreadContext("hisoka")
 
 
-    protected val stateDataBinding = MutableStateFlow(instanceOfStateDataBinding)
-    protected val viewEffect = Channel<E>(Channel.BUFFERED)
+    val stateDataBinding = MutableStateFlow(instanceOfStateDataBinding)
+    private val viewEffect = Channel<E>(Channel.BUFFERED)
     protected val state = MutableStateFlow(instanceOfState)
 
 
-    val getStateDataBinding: MutableStateFlow<SD> = stateDataBinding
+   val getStateDataBinding: MutableStateFlow<SD> = stateDataBinding
     val getViewEffects: Flow<E> = viewEffect.receiveAsFlow()
     val getState: MutableStateFlow<S> = state
 

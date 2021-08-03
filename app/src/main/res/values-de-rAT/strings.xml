@@ -49,4 +49,6 @@
     <string name="no">Nein</string>
     <string name="updated">Aktualisiert</string>
     <string name="email">Email</string>
+    <string name="deleted">gelöschter</string>
+    <string name="all_ideas">alle ideen</string>
 </resources>

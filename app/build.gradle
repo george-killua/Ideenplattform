@@ -103,7 +103,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-core:$koin_version"
-    implementation "io.insert-koin:koin-android-viewmodel:$koin_version"
 
 
     //image handler
@@ -121,6 +120,8 @@ dependencies {
     //other
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'com.github.luckyandyzhang:MentionEditText:1.0.0'
+
 
 
 }

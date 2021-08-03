@@ -6,8 +6,16 @@
     <data>
 
         <variable
-            name="mv"
+            name="add_idea"
+            type="com.killua.ideenplattform.ui.home.HomeViewModel.Action.AddIdea" />
+
+        <variable
+            name="view_model"
             type="com.killua.ideenplattform.ui.home.HomeViewModel" />
+
+        <variable
+            name="data_binding"
+            type="com.killua.ideenplattform.ui.home.HomeViewModel.StateUiDb" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,20 +24,30 @@
         tools:context=".ui.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/text_home"
+            android:id="@+id/rv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            setupCategoriesAdapter="@{data_binding.categoriesAdapter}"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ideas"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:adapter="@{mv.adapter}"
+            setupIdeaAdapter="@{data_binding.ideasAdapter}"
             android:backgroundTint="@color/grey"
 
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/rv_category" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,7 +59,7 @@
             android:clickable="true"
             android:contentDescription="@string/add_idea_image_details"
             android:focusable="true"
-            android:onClickListener="@{()-> mv.addIdea()}"
+            android:onClickListener="@{()-> view_model.setIntent(add_idea)}"
             android:src="@android:drawable/ic_input_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

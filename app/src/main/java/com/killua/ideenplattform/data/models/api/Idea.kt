@@ -1,5 +1,6 @@
 package com.killua.ideenplattform.data.models.api
 
+import android.icu.text.DateFormat
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.killua.ideenplattform.data.models.local.CategoryCaching
@@ -7,6 +8,7 @@ import com.killua.ideenplattform.data.models.local.UserCaching
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.*
 
 data class Idea(
@@ -28,6 +30,13 @@ data class Idea(
     val ratings: List<IdeaRating> = listOf()
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
 ) {
+
+    fun compareWithCreatedDate(other: Idea?): Int {
+        val dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+      return  LocalDateTime.parse(created,dateFormat).compareTo(LocalDateTime.parse(other?.created,dateFormat));
+
+    }
+
     private val arrayRating: Int by lazy {
         val tempArray = arrayListOf(0)
         ratings.forEach {

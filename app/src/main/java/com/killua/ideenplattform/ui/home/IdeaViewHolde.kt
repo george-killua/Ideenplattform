@@ -16,3 +16,4 @@ class IdeaViewHolder(val binding: ItemIdeaBinding, private val ideaOnClick: Idea
 interface IdeaOnClick {
     fun clicked(ideaId: String)
 }
+

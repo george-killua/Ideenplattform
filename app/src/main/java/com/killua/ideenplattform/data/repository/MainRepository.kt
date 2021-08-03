@@ -21,7 +21,6 @@ interface MainRepository {
         userId: String,
         updateManagerStatus: UpdateManagerStatus
     ): Flow<RepoResultResult<Boolean>>
-    fun postscher()
     suspend fun getAllCategories(): Flow<RepoResultResult<ArrayList<CategoryCaching>>>
     suspend fun getCategoryWithId(id: String): Flow<RepoResultResult<CategoryCaching>>
     suspend fun createNewIdea(
@@ -30,6 +29,7 @@ interface MainRepository {
     ): Flow<RepoResultResult<Idea?>>
 
     suspend fun getAllIdeas(): Flow<RepoResultResult<List<Idea>>>
+    suspend fun getAllIdeas(categoryId:String): Flow<RepoResultResult<List<Idea>>>
     suspend fun getIdeaWithId(ideaId: String): Flow<RepoResultResult<Any>>
     suspend fun updateIdeaWithId(
         ideaId: String,

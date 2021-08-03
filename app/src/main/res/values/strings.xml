@@ -54,5 +54,7 @@
     <string name="yes">yes</string>
     <string name="no">No</string>
     <string name="updated">Updated</string>
+    <string name="deleted">deleted</string>
     <string name="email">Email</string>
+    <string name="all_ideas">all ideas</string>
 </resources>

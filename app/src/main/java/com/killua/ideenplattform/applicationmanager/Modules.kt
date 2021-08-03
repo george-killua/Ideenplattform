@@ -138,7 +138,7 @@ val moduleBuilder by lazy {
         single {
             SharedPreferencesHandler(androidContext())
         }
-        single { HomeViewModel(get()) }
+        viewModel { HomeViewModel(get(), WeakReference(androidContext())) }
         viewModel { ManagementIdeeViewModel(get()) }
         single { DetailViewModel(get()) }
         viewModel { ProfileViewModel(get()) }

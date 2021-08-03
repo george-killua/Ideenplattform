@@ -34,12 +34,6 @@ class TopRankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onAction(HomeViewModel.Action.SetupFragment(view, true))
-        viewModel.stateLiveData.observe(viewLifecycleOwner, { state ->
-            binding.progressBar.visibility =
-                if (state.isLoadingProgressBar) View.VISIBLE else View.GONE
-            state.toastMessage?.let { message -> showToast(message) }
-        })
 
         binding.topRankMv = viewModel
         binding.executePendingBindings()
