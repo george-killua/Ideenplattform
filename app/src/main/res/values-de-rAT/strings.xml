@@ -40,4 +40,13 @@
     <string name="description_error">Beschreibung ist Leer</string>
     <string name="idea_name_error">Idee Name Leer</string>
     <string name="password_confirm">Passwortbestätigung</string>
+    <string name="passowrd_confirm_error">Bitte Passwort wiederholen</string>
+    <string name="firstname_error">Vorname fehlt</string>
+    <string name="password_error">Passwort fehlt</string>
+    <string name="lastname_error">Nachname fehlt</string>
+    <string name="delete_image">Möchten Sie das Bild wirklich löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="updated">Aktualisiert</string>
+    <string name="email">Email</string>
 </resources>

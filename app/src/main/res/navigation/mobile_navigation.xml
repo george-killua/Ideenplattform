@@ -89,6 +89,10 @@
         android:id="@+id/editProfileFragment"
         android:name="com.killua.ideenplattform.ui.editprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/edit_profile_to_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
 
 </navigation>

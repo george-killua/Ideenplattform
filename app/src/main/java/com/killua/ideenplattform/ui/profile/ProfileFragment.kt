@@ -2,17 +2,18 @@ package com.killua.ideenplattform.ui.profile
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.databinding.FragmentProfileBinding
+import com.killua.ideenplattform.ui.editprofile.BaseFragment
 import com.killua.ideenplattform.ui.safeNavigate
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.collect
+import okhttp3.internal.wait
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
 
     private val viewModel by viewModel<ProfileViewModel>()
     private var _binding: FragmentProfileBinding? = null
@@ -33,6 +34,11 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
         lifecycleScope.launchWhenCreated {
             viewModel.getViewEffects.collect {
                 onViewEffectReceived(it)
@@ -42,6 +48,7 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.getStateDataBinding.collect {
                 onStateDataBinding(it)
+
             }
         }
         lifecycleScope.launchWhenCreated {
@@ -50,6 +57,7 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
 
     private fun onViewEffectReceived(effect: ProfileEffect?) {
         when (effect) {
@@ -63,6 +71,7 @@ class ProfileFragment : Fragment() {
             }
             ProfileEffect.NavigateToLoginFragment -> {
                 val action = ProfileFragmentDirections.profileToLogin()
+
                 findNavController().safeNavigate(action)
             }
         }
@@ -71,6 +80,7 @@ class ProfileFragment : Fragment() {
     private fun onStateDataBinding(stateViewDb: StateViewDataBinding?) {
         binding.state = stateViewDb
         binding.executePendingBindings()
+
     }
 
     private fun onState(state: ProfileState?) {
@@ -87,9 +97,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

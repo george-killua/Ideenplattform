@@ -33,7 +33,7 @@
             android:src="@drawable/ic_person"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            imageUrl="@{data.author.profilePicture}" />
+            imagePath="@{data.author.profilePicture}" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -74,7 +74,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/barrier3"
-            bind:imageUrl="@{data.imageUrl}" />
+            imagePath="@{data.imageUrl}" />
 
         <TextView
             android:id="@+id/tv_description"

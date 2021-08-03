@@ -3,14 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="vm"
-            type="com.killua.ideenplattform.ui.newidee.ManagementIdeeViewModel.ManagementStateDB" />
-
-    </data>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +16,6 @@
 
             <ImageView
                 android:id="@+id/iv_idea_image"
-                imageUrl="@{vm.imagePathUri}"
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_90sdp"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -33,7 +24,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn_upload_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/placeholder" />
+                app:srcCompat="@drawable/placeholder"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_upload_image"
@@ -46,7 +38,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_idea_image"
                 app:layout_constraintTop_toTopOf="@+id/iv_idea_image"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_name"
@@ -67,7 +60,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={vm.ideaName}"
                     tools:ignore="DuplicateSpeakableTextCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +84,6 @@
                     android:maxHeight="@dimen/_75sdp"
                     android:scrollbars="none"
                     android:scrollHorizontally="true"
-                    android:text="@={vm.description }"
                     android:textColorHint="#757575"
                     tools:ignore="TextContrastCheck" />
 
@@ -110,7 +101,6 @@
                 android:minHeight="48dp"
                 android:overlapAnchor="false"
                 android:spinnerMode="dropdown"
-                setCustomAdapter="@{vm.categoriesArray}"
                 app:layout_constraintBottom_toTopOf="@+id/btn_add_idea"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

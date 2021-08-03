@@ -19,8 +19,8 @@ import org.mockito.Mockito.mock
 @RunWith(JUnit4::class)
 class MainRepositoryImplTest {
 
-  /*  private lateinit var repo: MainRepositoryImpl
-
+   private lateinit var repo: MainRepositoryImpl
+/*
     private val validLocation = "Helsinki"
     private val invalidLocation = "Helsinkii"
    // private val successResource = Resource.success(Weather(TempData(1.0, 1), "test"))

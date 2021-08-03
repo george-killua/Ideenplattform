@@ -5,6 +5,6 @@
     <dimen name="top_margin_small">@dimen/_8sdp</dimen>
     <dimen name="activity_horizontal_margin">@dimen/_16sdp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="dimen20dp">20dp</dimen>
-    <dimen name="dimen15dp">15dp</dimen>
+    <dimen name="save_changes_btn">@dimen/_20sdp</dimen>
+    <dimen name="dimen15dp">@dimen/_15sdp</dimen>
 </resources>

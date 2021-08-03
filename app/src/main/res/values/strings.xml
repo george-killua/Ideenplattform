@@ -46,4 +46,13 @@
     <string name="description_error">description Is Empty</string>
     <string name="idea_name_error">Idea Title Missing</string>
     <string name="password_confirm">password confirm</string>
+    <string name="passowrd_confirm_error">confirm password please</string>
+    <string name="firstname_error">first name is missing</string>
+    <string name="password_error">password is missing</string>
+    <string name="lastname_error">last name is missing</string>
+    <string name="delete_image">Are you sure you want to delete the Image?</string>
+    <string name="yes">yes</string>
+    <string name="no">No</string>
+    <string name="updated">Updated</string>
+    <string name="email">Email</string>
 </resources>

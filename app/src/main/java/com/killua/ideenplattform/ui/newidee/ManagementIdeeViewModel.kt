@@ -1,5 +1,6 @@
 package com.killua.ideenplattform.ui.newidee
 
+import android.net.Uri
 import com.killua.ideenplattform.applicationmanager.MyApplication
 import com.killua.ideenplattform.data.models.api.Idea
 import com.killua.ideenplattform.data.repository.MainRepository
@@ -12,9 +13,12 @@ import java.util.*
 class ManagementIdeeViewModel(private val userRepository: MainRepository) :
     BaseViewModel<ManagementIdeeViewModel.ManagementStateDB, ManagementIdeeViewModel.Effect,
             ManagementIdeeViewModel.State>(State(), ManagementStateDB()) {
+
+
+
     data class ManagementStateDB(
         val titleIsToEdit: Boolean = false,
-        var imagePathUri: String = "",
+        var imagePathUri: Uri? = null,
         var ideaName: String = "",
         var description: String = "",
         val categoriesArray: List<String> = listOf(),
@@ -64,7 +68,7 @@ class ManagementIdeeViewModel(private val userRepository: MainRepository) :
 
         getStateDataBinding().run {
             launchCoroutine {
-                var categoryId: String = ""
+                var categoryId = ""
                 userRepository.getAllCategories().collect { repoResult ->
                     try {
                         val categoryName: String = categoriesArray.get(selectedCategory)

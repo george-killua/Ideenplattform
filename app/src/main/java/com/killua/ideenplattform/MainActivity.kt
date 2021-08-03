@@ -2,8 +2,6 @@ package com.killua.ideenplattform
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,7 +10,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.killua.ideenplattform.databinding.ActivityMainBinding
-import com.killua.ideenplattform.ui.uiutils.UIBasementController
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavController(): Pair<BottomNavigationView, NavController> {
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return Pair(navView, navController)
     }
 

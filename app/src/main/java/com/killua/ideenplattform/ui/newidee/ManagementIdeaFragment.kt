@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import androidx.navigation.fragment.navArgs
 import com.github.drjacky.imagepicker.ImagePicker
 import com.killua.ideenplattform.R
 import com.killua.ideenplattform.databinding.FragmentIdeaManagementBinding
+import com.killua.ideenplattform.ui.DataBindingAdapters.setCustomAdapter
 import com.killua.ideenplattform.ui.safeNavigate
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,6 +33,7 @@ class ManagementIdeaFragment : Fragment() {
     private val args: ManagementIdeaFragmentArgs by navArgs()
     private val viewModel by viewModel<ManagementIdeeViewModel>()
 
+    // FIXME: 02.08.21 datastate binding qith image
     private lateinit var binding: FragmentIdeaManagementBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
     var imageFile: File? = null
@@ -41,14 +42,14 @@ class ManagementIdeaFragment : Fragment() {
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data!!
                 imageFile = ImagePicker.getFile(it!!.data!!)
-                e("uriLoader", it.data.toString())
-                e("uriLoader", it.data!!.data.toString())
-                e("uriLoader", it.data!!.data!!.path.toString())
-                binding.ivIdeaImage.setImageURI(uri)
-                viewModel.reducerDB {
-                    copy(imagePathUri = it.data?.data!!.path!!.toString())
+
+                val uri = it.data!!.data
+                binding.ivIdeaImage
+                uri?.let {
+                    viewModel.reducerDB {
+                        copy(imagePathUri = it)
+                    }
                 }
             }
         }
@@ -88,11 +89,13 @@ class ManagementIdeaFragment : Fragment() {
             }
             lifecycleScope.launchWhenCreated {
                 getStateDataBinding.collect {
+                    binding.ivIdeaImage.setImageURI(it.imagePathUri)
                     setBtnUpload(it.btnSubmitTextIsToSave)
-                    setBtnUploadImage(it.imagePathUri)
-                   if(it.selectedCategory>0) selectedInitializer(it.selectedCategory)
-                    binding.vm = it
-                    binding.executePendingBindings()
+                    setBtnUploadImage(it.imagePathUri?.path)
+                    setCustomAdapter(binding.spCategory, it.categoriesArray)
+                    if (it.selectedCategory > 0) selectedInitializer(it.selectedCategory)
+                    binding.etName.editText?.setText(it.ideaName)
+                    binding.etDescription.editText?.setText(it.description)
                 }
             }
             lifecycleScope.launchWhenStarted {
@@ -143,9 +146,7 @@ class ManagementIdeaFragment : Fragment() {
                         val errorTextview = binding.spCategory.selectedView as TextView
                         errorTextview.error = ""
                         errorTextview.setTextColor(Color.RED)
-// for show error message on spinner
-                        // for show error message on spinner
-                        errorTextview.text = "Your Error Message here"
+                        errorTextview.text = ""
                     }
 
                 }
@@ -155,19 +156,21 @@ class ManagementIdeaFragment : Fragment() {
     }
 
     private fun selectedInitializer(selectedCategory: Int) {
-        binding.spCategory.setSelection(selectedCategory,true)
+        binding.spCategory.setSelection(selectedCategory)
     }
 
     private fun descriptionRemoveError() {
         binding.etDescription.error = null
         binding.etDescription.isErrorEnabled = false
     }
+
     private fun titleRemoveError() {
         binding.etName.isErrorEnabled = false
 
     }
-    private fun setBtnUploadImage(imagePathUri: String) {
-        if (imagePathUri.isBlank())
+
+    private fun setBtnUploadImage(imagePathUri: String?) {
+        if (imagePathUri.isNullOrBlank())
             binding.btnUploadImage.text = getString(R.string.upload)
         else
             binding.btnUploadImage.text = getString(R.string.edit)
@@ -199,11 +202,11 @@ class ManagementIdeaFragment : Fragment() {
 
     private fun setCategorySpinnerError() {
         val selectedView: View = binding.spCategory.selectedView
-        if (selectedView != null && selectedView is TextView) {
+        if (selectedView is TextView) {
             val selectedTextView = selectedView
 
-                val errorString =  getString(R.string.select_category)
-                selectedTextView.error = errorString
+            val errorString = getString(R.string.select_category)
+            selectedTextView.error = errorString
 
         }
     }

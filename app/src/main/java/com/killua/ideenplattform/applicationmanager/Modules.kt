@@ -29,13 +29,15 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 
 
 val databaseModule by lazy {
     module {
         fun dbProvider(context: Context): DbStructure {
-            val factory = SupportFactory(SQLiteDatabase.getBytes("nfjsdnfsd@fsdk221,.".toCharArray()))
+            val factory =
+                SupportFactory(SQLiteDatabase.getBytes("nfjsdnfsd@fsdk221,.".toCharArray()))
             return Room.databaseBuilder(
                 context, DbStructure::class.java,
                 "CurrentDBCALLY"
@@ -57,7 +59,7 @@ val httpModule by lazy {
     module {
         fun provideHttpClient(
             sharedPreferencesHandler: SharedPreferencesHandler,
-            context: Context
+            context: Context,
         ): OkHttpClient {
             val user = sharedPreferencesHandler.userLoader
             val logging = HttpLoggingInterceptor()
@@ -116,7 +118,7 @@ val repoModule by lazy {
             ideaDao: IdeaDao,
             userDao: UserDao,
             categoryDao: CategoryDao,
-            context: Context
+            context: Context,
         ): MainRepository {
             return MainRepositoryImpl(
                 api,
@@ -137,10 +139,10 @@ val moduleBuilder by lazy {
             SharedPreferencesHandler(androidContext())
         }
         single { HomeViewModel(get()) }
-        viewModel { ManagementIdeeViewModel( get()) }
+        viewModel { ManagementIdeeViewModel(get()) }
         single { DetailViewModel(get()) }
         viewModel { ProfileViewModel(get()) }
-        viewModel { EditProfileViewModel(get()) }
+        viewModel { EditProfileViewModel(get(), WeakReference(androidContext())) }
 
     }
 }

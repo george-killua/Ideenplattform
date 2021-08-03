@@ -276,7 +276,7 @@ class MainRepositoryImpl(
 
             is NetworkResult.Error -> emit(
                     RepoResultResult(
-                        data = true,
+                        data = false,
                         isNetworkingData = false,
                         networkErrorMessage = res.message
                     )
@@ -291,11 +291,15 @@ class MainRepositoryImpl(
         when (val res = safeApiCall(api.updateMangerStatus(userId, updateManagerStatus))) {
 
             is NetworkResult.Success -> {
-                emit(RepoResultResult(true, true, "rating deleted Successfully"))
+                emit(RepoResultResult(data = true,
+                    isNetworkingData = true,
+                    networkErrorMessage = "rating deleted Successfully"))
             }
             is NetworkResult.Error -> {
 
-                emit(RepoResultResult(false, false, res.message))
+                emit(RepoResultResult(data = false,
+                    isNetworkingData = false,
+                    networkErrorMessage = res.message))
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -621,19 +625,20 @@ data class RepoResultResult<out T>(
 
 sealed class NetworkResult<T>(
     val data: T? = null,
-    val message: String? = null,
+    val message: String? = null
 ) {
-    class Success<T>(data: T) : NetworkResult<T>(data)
+    class Success<T>(data: T?) : NetworkResult<T>(data)
     class Error<T>(message: String, data: T? = null) : NetworkResult<T>(data, message)
 
     object ResponseHandler {
         fun <T> safeApiCall(apiCall: Response<T>): NetworkResult<T> {
             try {
-                if (apiCall.isSuccessful) {
+                if (apiCall.isSuccessful || apiCall.code()==204) {
                     val body = apiCall.body()
-                    body?.let {
+
                         return Success(body)
-                    }
+
+
                 }
                 return error("${apiCall.code()} ${apiCall.message()}")
             } catch (e: Exception) {

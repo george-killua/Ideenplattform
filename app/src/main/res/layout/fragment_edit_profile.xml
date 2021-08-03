@@ -5,20 +5,37 @@
 
     <data>
 
-        <variable
-            name="editProfileVm"
-            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.EditProfileStateDB" />
-    </data>
+        <import type="android.view.View" />
 
+        <variable
+            name="saveChanges"
+            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.Action.SaveChangesClicked" />
+
+        <variable
+            name="chooseImage"
+            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.Action.ChooseImageClicked" />
+
+        <variable
+            name="stateDb"
+            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.EditProfileStateDB" />
+
+        <variable
+            name="viewModel"
+            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel" />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.editprofile.EditProfileFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_image"
-            imageUrl="@=    {editProfileVm.imageUri}"
+            imagePath="@{stateDb.imageUri}"
             android:layout_width="@dimen/_150sdp"
+
             android:layout_height="@dimen/_150sdp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -29,11 +46,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:shadowRadius="@integer/material_motion_duration_long_2"
+            android:id="@+id/btn_image_chooser"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:onClickListener="@{()->viewModel.setIntent(chooseImage)}"
             android:shadowColor="@color/black"
-            android:src="@drawable/ic_add"
+            android:shadowRadius="@integer/material_motion_duration_long_2"
             app:layout_constraintBottom_toBottomOf="@+id/iv_profile_image"
             app:layout_constraintEnd_toEndOf="@+id/iv_profile_image"
             app:layout_constraintStart_toEndOf="@+id/iv_profile_image"
@@ -45,9 +63,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/top_margin_big"
-            android:layout_marginEnd="16dp"
+
             android:hint="@string/username"
             android:padding="@dimen/dimen15dp"
 
@@ -60,7 +78,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={editProfileVm.firstName}"
+                android:text="@={stateDb.firstName}"
 
 
                 tools:ignore="DuplicateClickableBoundsCheck" />
@@ -72,9 +90,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/top_margin_small"
             android:hint="@string/last_name"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
@@ -86,7 +103,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={editProfileVm.lastname}" />
+                android:text="@={stateDb.lastname}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -95,7 +112,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/top_margin_small"
+
             android:hint="@string/password"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
@@ -107,7 +126,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={editProfileVm.password}" />
+                android:text="@={stateDb.password}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -116,9 +135,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/top_margin_small"
             android:hint="@string/password_confirm"
             android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
@@ -130,14 +148,15 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={editProfileVm.passwordConfirm}" />
+                android:text="@={stateDb.passwordConfirm}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen20dp"
+            android:layout_margin="@dimen/save_changes_btn"
+            android:onClickListener="@{()->viewModel.setIntent(saveChanges)}"
             android:padding="@dimen/dimen15dp"
             android:text="@string/save_changes"
             android:textColor="@color/black"
@@ -153,9 +172,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/profile_lastname"
+            android:visibility="@{stateDb.isLoading?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>
