@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vmLogin"
-            type="com.killua.ideenplattform.ui.login.LoginViewModel" />
+            type="com.killua.ideenplattform.authorization.ui.login.LoginViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginFragment">
+        tools:context=".ideamain.login.LoginFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/RB_Logo"
@@ -21,83 +22,88 @@
             android:layout_height="200dp"
             android:padding="30dp"
             android:src="@drawable/rb_logo"
-            app:layout_constraintBottom_toTopOf="@+id/et_username"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_username"
+            android:id="@+id/et_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/save_changes_btn"
-            android:background="@color/grey"
-            android:hint="@string/username"
-            android:padding="@dimen/dimen15dp"
-            android:textColorHint="@color/grey_3"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RB_Logo">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={vmLogin.userName}"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/save_changes_btn"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/top_margin_big"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:padding="@dimen/dimen15dp"
             android:textColorHint="@color/grey_3"
             android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_username">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/RB_Logo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={vmLogin.password}"/>
+                tools:layout_editor_absoluteX="75dp"
+                tools:layout_editor_absoluteY="438dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/save_changes_btn"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/top_margin_big"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/grey_3"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="75dp"
+                tools:layout_editor_absoluteY="438dp" />
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/save_changes_btn"
-            android:padding="@dimen/dimen15dp"
+            android:layout_marginTop="@dimen/save_changes_btn"
+            android:paddingVertical="@dimen/_14sdp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="@string/login"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnRegister"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_Password"
-            />
+            app:layout_constraintTop_toBottomOf="@id/et_password" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/save_changes_btn"
+            android:layout_marginTop="@dimen/save_changes_btn"
+            android:paddingVertical="@dimen/_14sdp"
             android:backgroundTint="@color/white"
             android:padding="@dimen/dimen15dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="@string/register"
             android:textColor="@color/grey_2"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login"
-  />
+           app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

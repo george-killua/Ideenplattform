@@ -31,12 +31,13 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = '1.8'
         kotlinOptions.freeCompilerArgs += ['-Xuse-experimental=kotlinx.serialization.ImplicitReflectionSerializer,kotlinx.coroutines.ObsoleteCoroutinesApi']
 
     }
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -64,6 +65,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
 
     //testing
@@ -121,6 +124,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
     implementation 'com.github.luckyandyzhang:MentionEditText:1.0.0'
+    implementation "com.github.pgreze:android-reactions:1.6"
+
 
 
 

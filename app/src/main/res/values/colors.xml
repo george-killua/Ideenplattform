@@ -13,5 +13,6 @@
     <color name="grey_3">#5F5F5F</color>
     <color name="primary_color">#FFED00</color>
     <color name="primary_color_variant">#FFC107</color>
+    <color name="light_blue">#39add1</color>
 
 </resources>

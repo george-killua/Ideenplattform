@@ -7,7 +7,7 @@
 
         <variable
             name="state"
-            type="com.killua.ideenplattform.ui.profile.StateViewDataBinding" />
+            type="com.killua.ideenplattform.ideamain.profile.StateViewDataBinding" />
 
     </data>
 
@@ -15,7 +15,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.profile.ProfileFragment">
+        tools:context=".ideamain.profile.ProfileFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_image"

@@ -9,19 +9,19 @@
 
         <variable
             name="saveChanges"
-            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.Action.SaveChangesClicked" />
+            type="com.killua.ideenplattform.ideamain.editprofile.EditProfileViewModel.Action.SaveChangesClicked" />
 
         <variable
             name="chooseImage"
-            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.Action.ChooseImageClicked" />
+            type="com.killua.ideenplattform.ideamain.editprofile.EditProfileViewModel.Action.ChooseImageClicked" />
 
         <variable
             name="stateDb"
-            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel.EditProfileStateDB" />
+            type="com.killua.ideenplattform.ideamain.editprofile.EditProfileViewModel.EditProfileStateDB" />
 
         <variable
             name="viewModel"
-            type="com.killua.ideenplattform.ui.editprofile.EditProfileViewModel" />
+            type="com.killua.ideenplattform.ideamain.editprofile.EditProfileViewModel" />
     </data>
 <ScrollView
     android:layout_width="match_parent"
@@ -29,7 +29,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.editprofile.EditProfileFragment">
+        tools:context=".ideamain.editprofile.EditProfileFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_image"

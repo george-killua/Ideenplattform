@@ -2,6 +2,7 @@ package com.killua.ideenplattform
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,14 +13,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.killua.ideenplattform.databinding.ActivityMainBinding
 
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavController(): Pair<BottomNavigationView, NavController> {
         val navView: BottomNavigationView = binding.navView
 
-                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return Pair(navView, navController)
     }
 
@@ -58,3 +60,5 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
+

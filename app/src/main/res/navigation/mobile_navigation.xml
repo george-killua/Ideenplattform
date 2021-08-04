@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.killua.ideenplattform.ui.home.HomeFragment"
+        android:name="ideamain.home.HomeFragment"
         android:label="@string/title_home_idea">
         <action
             android:id="@+id/home_to_detail"
@@ -26,20 +26,8 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.killua.ideenplattform.ui.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
-    </fragment>
-    <fragment
         android:id="@+id/detailFragment"
-        android:name="com.killua.ideenplattform.ui.details.DetailFragment"
+        android:name="ideamain.details.DetailFragment"
         android:label="fragment_detail">
         <action
             android:id="@+id/detail_to_edit"
@@ -50,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/management_idea_fragment"
-        android:name="com.killua.ideenplattform.ui.newidee.ManagementIdeaFragment"
+        android:name="ideamain.newidee.ManagementIdeaFragment"
         android:label="fragment_new_idee">
         <argument
             android:name="id_of_idea"
@@ -62,32 +50,24 @@
             app:destination="@id/detailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signupFragment"
-        android:name="com.killua.ideenplattform.ui.signup.SignupFragment"
-        android:label="fragment_signup"
-        tools:layout="@layout/fragment_signup" />
-    <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.killua.ideenplattform.ui.profile.ProfileFragment"
+        android:name="ideamain.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/profile_to_edit_profile"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/profile_to_login"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/profile_to_new_idea"
             app:destination="@id/management_idea_fragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_top_ranked"
-        android:name="com.killua.ideenplattform.ui.toprank.TopRankFragment"
+        android:name="ideamain.toprank.TopRankFragment"
         android:label="@string/title_top_ranked_ideas" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.killua.ideenplattform.ui.editprofile.EditProfileFragment"
+        android:name="ideamain.editprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action

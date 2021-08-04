@@ -18,6 +18,7 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
+        maven { url "https://maven.andob.info/repository/open_source" }
 
         mavenCentral()
         //Make sure to add this in your project for uCrop - an internal library

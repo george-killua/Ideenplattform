@@ -15,7 +15,7 @@ import com.killua.ideenplattform.data.models.local.UserCaching
 import com.killua.ideenplattform.data.network.ApiServices
 import com.killua.ideenplattform.data.repository.NetworkResult.ResponseHandler.safeApiCall
 import com.killua.ideenplattform.data.requests.*
-import com.killua.ideenplattform.data.utils.SharedPreferencesHandler
+import com.killua.ideenplattform.utils.SharedPreferencesHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext

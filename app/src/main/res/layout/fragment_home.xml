@@ -7,21 +7,21 @@
 
         <variable
             name="add_idea"
-            type="com.killua.ideenplattform.ui.home.HomeViewModel.Action.AddIdea" />
+            type="com.killua.ideenplattform.ideamain.home.HomeViewModel.Action.AddIdea" />
 
         <variable
             name="view_model"
-            type="com.killua.ideenplattform.ui.home.HomeViewModel" />
+            type="com.killua.ideenplattform.ideamain.home.HomeViewModel" />
 
         <variable
             name="data_binding"
-            type="com.killua.ideenplattform.ui.home.HomeViewModel.StateUiDb" />
+            type="com.killua.ideenplattform.ideamain.home.HomeViewModel.StateUiDb" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ideamain.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_category"
@@ -32,6 +32,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_sort_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            setupSortTypesAdapter="@{data_binding.sortTypeAdapter}"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_category" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_ideas"
@@ -47,7 +56,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_category" />
+            app:layout_constraintTop_toBottomOf="@id/rv_sort_type" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

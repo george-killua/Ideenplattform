@@ -31,11 +31,7 @@ data class Idea(
 //  example: https://ideenmanagement.tailored-apps.com/image/idea/some-url.png
 ) {
 
-    fun compareWithCreatedDate(other: Idea?): Int {
-        val dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-      return  LocalDateTime.parse(created,dateFormat).compareTo(LocalDateTime.parse(other?.created,dateFormat));
 
-    }
 
     private val arrayRating: Int by lazy {
         val tempArray = arrayListOf(0)

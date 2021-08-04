@@ -9,7 +9,7 @@
 
         <variable
             name="detailVM"
-            type="com.killua.ideenplattform.ui.details.DetailViewModel" />
+            type="com.killua.ideenplattform.ideamain.details.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:context=".ui.details.DetailFragment">
+                tools:context=".ideamain.details.DetailFragment">
 
                 <ImageView
                     android:id="@+id/post_image"

@@ -14,11 +14,16 @@
             name="comment"
             type="com.killua.ideenplattform.data.models.api.IdeaComment" />
     </data>
-
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_6sdp"
+    android:padding="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_35sdp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/grey"
         android:padding="@dimen/_3sdp">
 
         <ImageView
@@ -27,8 +32,8 @@
             android:layout_height="0dp"
             android:contentDescription="@string/option"
             android:src="@drawable/ic_more"
+            android:layout_margin="@dimen/_8sdp"
             android:visibility="@{comment.ownerComment(user) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,11 +54,12 @@
             android:id="@+id/tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4sdp"
             android:text="@{comment.message}"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/comment_profile_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_full_name" />
 
         <TextView
             android:id="@+id/tv_full_name"
@@ -73,8 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_comment"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_margin="15dp"
             android:text="@{comment.created}"
             android:textColor="@color/grey"
             android:textSize="14sp"
@@ -82,4 +87,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_comment" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
 </layout>
