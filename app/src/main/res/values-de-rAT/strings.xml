@@ -61,4 +61,5 @@
     </string-array>
     <string name="created">erstellt</string>
     <string name="email_error">email fehler</string>
+    <string name="email_already_registerd">Email existiert</string>
 </resources>
