@@ -1,18 +1,16 @@
-package com.killua.ideenplattform.ui.home
+package com.killua.ideenplattform.ideamain.home
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.killua.ideenplattform.databinding.FragmentHomeBinding
-import com.killua.ideenplattform.ui.editprofile.BaseFragment
-import com.killua.ideenplattform.ui.safeNavigate
+import com.killua.ideenplattform.ideamain.editprofile.BaseFragment
+import com.killua.ideenplattform.ideamain.safeNavigate
+import ideamain.home.HomeFragmentDirections
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
