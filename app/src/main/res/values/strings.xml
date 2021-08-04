@@ -57,4 +57,17 @@
     <string name="deleted">deleted</string>
     <string name="email">Email</string>
     <string name="all_ideas">all ideas</string>
+    <string-array name="sort_type">
+        <item>most rated</item>
+        <item>less rated</item>
+        <item>create date</item>
+        <item>last update</item>
+        <item>most comments</item>
+        <item>shuffle</item>
+    </string-array>
+    <string name="title_activity_authentication" translatable="false">AuthenticationActivity</string>
+
+    <string name="email_error">Email Error</string>
+    <string name="created">created</string>
+    <string name="email_already_registerd">Email already registered</string>
 </resources>

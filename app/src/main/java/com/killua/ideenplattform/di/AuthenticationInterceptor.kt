@@ -1,4 +1,4 @@
-package com.killua.ideenplattform.applicationmanager
+package com.killua.ideenplattform.di
 
 import okhttp3.*
 

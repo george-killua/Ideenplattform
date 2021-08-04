@@ -8,6 +8,8 @@ dependencyResolutionManagement {
         maven {
             url "https://jitpack.io"
         }
+        maven { url "https://maven.andob.info/repository/open_source" }
+
     }
 }
 rootProject.name = "Ideenplattform"

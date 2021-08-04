@@ -1,4 +1,4 @@
-package com.killua.ideenplattform.ui
+package com.killua.ideenplattform.ideamain
 
 import android.util.Log
 import androidx.annotation.MainThread

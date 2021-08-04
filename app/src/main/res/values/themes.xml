@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="edit_text_google" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_marginTop">@dimen/_8sdp</item>
         <item name="cornerRadius">@dimen/_8sdp</item>
@@ -35,4 +36,13 @@
         <item name="cornerRadius">@dimen/_25sdp</item>
         <item name="android:radius">@dimen/_25sdp</item>
     </style>
+
+    <style name="Theme.Ideenplattform.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Ideenplattform.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Ideenplattform.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

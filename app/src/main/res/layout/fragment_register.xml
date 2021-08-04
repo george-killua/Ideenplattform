@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.killua.ideenplattform.authorization.ui.register.RegisterViewModel" />
+
+        <variable
+            name="inputChanged"
+            type="com.killua.ideenplattform.authorization.ui.register.RegisterAction.InputHasChanged" />
+
+        <variable
+            name="registerClicked"
+            type="com.killua.ideenplattform.authorization.ui.register.RegisterAction.RegisterClicked" />
+
+        <variable
+            name="stateDb"
+            type="com.killua.ideenplattform.authorization.ui.register.RegisterUiStateDb" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".authorization.ui.register.RegisterFragment">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_firstName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/top_margin_big"
+                android:layout_marginBottom="@dimen/top_margin_small"
+                android:hint="@string/username"
+                android:textColorHint="@color/grey_3"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/et_lastName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{()->viewModel.setIntent(inputChanged)}"
+                    android:drawableEnd="@drawable/ic_person"
+                    android:inputType="textPersonName"
+                    android:text="@={stateDb.firstName}"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_lastName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/top_margin_big"
+                android:layout_marginBottom="@dimen/top_margin_small"
+                android:hint="@string/last_name"
+                android:textColorHint="@color/grey_3"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_firstName">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{()->viewModel.setIntent(inputChanged)}"
+                    android:drawableEnd="@drawable/ic_person"
+                    android:inputType="textPersonName"
+                    android:text="@={stateDb.lastName}"
+                    tools:ignore="TextContrastCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/top_margin_big"
+                android:layout_marginBottom="@dimen/top_margin_small"
+                android:hint="@string/email"
+                android:textColorHint="@color/grey_3"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_lastName">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{()->viewModel.setIntent(inputChanged)}"
+                    android:drawableEnd="@drawable/ic_email"
+                    android:inputType="textWebEmailAddress"
+                    android:text="@={stateDb.email}"
+                    android:textColorHint="@color/grey_3"
+                    tools:ignore="TextContrastCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/top_margin_big"
+                android:layout_marginBottom="@dimen/top_margin_small"
+                android:hint="@string/password"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{()->viewModel.setIntent(inputChanged)}"
+                    android:drawableEnd="@drawable/ic_lock"
+                    android:inputType="textPassword"
+                    android:text="@={stateDb.password}"
+                    android:textColorHint="@color/grey_3"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_passwordConfirm"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/top_margin_big"
+                android:layout_marginBottom="@dimen/top_margin_small"
+                android:hint="@string/password_confirm"
+                android:textColorHint="@color/grey_3"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:afterTextChanged="@{()->viewModel.setIntent(inputChanged)}"
+                    android:drawableEnd="@drawable/ic_lock"
+                    android:inputType="textPassword"
+                    android:text="@={stateDb.passwordConfirm}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:onClickListener="@{()->viewModel.setIntent(registerClicked)}"
+                android:text="@string/register"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_passwordConfirm" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

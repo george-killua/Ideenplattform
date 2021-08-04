@@ -1,4 +1,4 @@
-package com.killua.ideenplattform.data.utils
+package com.killua.ideenplattform.utils
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -51,4 +51,14 @@
     <string name="email">Email</string>
     <string name="deleted">gelöschter</string>
     <string name="all_ideas">alle ideen</string>
+    <string-array name="sort_type">
+        <item>am meisten bewertet</item>
+        <item>weniger bewertet</item>
+        <item>Erstellungsdatum</item>
+        <item>zuletzt aktualisiert</item>
+        <item>die meisten Kommentare</item>
+        <item>Mischen</item>
+    </string-array>
+    <string name="created">erstellt</string>
+    <string name="email_error">email fehler</string>
 </resources>

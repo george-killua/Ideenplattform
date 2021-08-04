@@ -7,13 +7,13 @@
 
         <variable
             name="topRankMv"
-            type="com.killua.ideenplattform.ui.home.HomeViewModel" />
+            type="com.killua.ideenplattform.ideamain.home.HomeViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.toprank.TopRankFragment">
+    tools:context=".ideamain.toprank.TopRankFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/text_home"
         android:layout_width="0dp"
